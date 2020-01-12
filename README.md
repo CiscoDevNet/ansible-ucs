@@ -49,7 +49,6 @@ This repository includes a playbooks directory with examples including an invent
 ```
 # vi inventory
 [ucs]
-[ucs]
 13.58.22.56
 
 [ucs:vars]
