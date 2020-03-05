@@ -110,20 +110,22 @@ options:
 requirements:
 - ucsmsdk
 author:
-- David Soper (@dsoper2)
-- CiscoUcs (@CiscoUcs)
-- Brett Johnson (@sdbrett)
+  - Brett Johnson (@sdbrett)
+  - David Soper (@dsoper2)
+  - John McDonough (@movinalot)
+  - CiscoUcs (@CiscoUcs)
 version_added: '2.5'
 '''
 
 EXAMPLES = r'''
 - name: Configure IPv4 and IPv6 address pool
   cisco.ucs.ucs_ip_pool:
-    name: ip-pool-B
-    hostname: 172.16.143.150
-    username: admin
-    password: password
-    ip_blocks:
+    hostname: "{{ ucs_hostname }}"
+    username: "{{ ucs_username }}"
+    password: "{{ ucs_password }}"
+    name: ip-pool-01
+    org_dn: org-root/org-level1
+    ipv4_blocks:
     - first_addr: 192.168.10.1
       last_addr: 192.168.10.20
       subnet_mask: 255.255.255.128
@@ -131,37 +133,37 @@ EXAMPLES = r'''
     - first_addr: 192.168.11.1
       last_addr: 192.168.11.20
       subnet_mask: 255.255.255.128
-    - first_addr: 122.168.11.1
-      last_addr: 122.168.11.20
-      subnet_mask: 255.255.255.128
-    - first_addr: 132.168.11.1
-      last_addr: 132.168.11.20
-      subnet_mask: 255.255.255.128
-      absent
+      default_gw: 192.168.11.2
     ipv6_blocks:
     - ipv6_first_addr: fe80::1cae:7992:d7a1:ed07
       ipv6_last_addr: fe80::1cae:7992:d7a1:edfe
       ipv6_default_gw: fe80::1cae:7992:d7a1:ecff
+    - ipv6_first_addr: fe80::1cae:7992:d7a1:ec07
+      ipv6_last_addr: fe80::1cae:7992:d7a1:ecfe
+      ipv6_default_gw: fe80::1cae:7992:d7a1:ecff
+
+- name: Delete IPv4 and IPv6 address pool blocks
+  cisco.ucs.ucs_ip_pool:
+    hostname: "{{ ucs_hostname }}"
+    username: "{{ ucs_username }}"
+    password: "{{ ucs_password }}"
+    name: ip-pool-01
+    org_dn: org-root/org-level1
+    ipv4_blocks:
+    - first_addr: 192.168.10.1
+      last_addr: 192.168.10.20
       state: absent
-    - ipv6_first_addr: fe80::2cae:7992:d7a1:ed07
-      ipv6_last_addr: fe80::2cae:7992:d7a1:edfe
-      ipv6_default_gw: fe80::2cae:7992:d7a1:ecff
+    ipv6_blocks:
+    - ipv6_first_addr: fe80::1cae:7992:d7a1:ec07
+      ipv6_last_addr: fe80::1cae:7992:d7a1:ecfe
+      state: absent
 
-
-
-- name: Remove IPv4 address pools
+- name: Remove IPv4 and IPv6 address pool
   cisco.ucs.ucs_ip_pool:
-    hostname: 172.16.143.150
-    username: admin
-    password: password
-    name: ip-A
-    state: absent
-- name: Remove IPv6 address pools
-  cisco.ucs.ucs_ip_pool:
-    hostname: 172.16.143.150
-    username: admin
-    password: password
-    name: ipv6-B
+    hostname: "{{ ucs_hostname }}"
+    username: "{{ ucs_username }}"
+    password: "{{ ucs_password }}"
+    name: ip-pool-01
     state: absent
 '''
 
