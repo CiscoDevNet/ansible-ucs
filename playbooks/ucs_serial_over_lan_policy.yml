@@ -1,5 +1,5 @@
 ---
-# Example Playbook: cisco.ucs.ucs_serial_over_lan
+# Example Playbook: cisco.ucs.ucs_serial_over_lan_policy
 - hosts: ucs
   connection: local
   gather_facts: false

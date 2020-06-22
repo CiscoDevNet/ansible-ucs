@@ -13,7 +13,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = r'''
 ---
-module: ucs_serial_over_lan
+module: ucs_serial_over_lan_policy
 
 short_description: Manages UCS Serial Over Lan Policies on UCS Manager
 
@@ -36,7 +36,7 @@ options:
         - The name of the organization.
         - Enter up to 16 characters.
         - "You can use any characters or spaces except the following:"
-        - "` (accent mark), \ (backslash), ^ (carat), \" (double quote)
+        - "` (accent mark), \ (backslash), ^ (carat), \" (double quote)"
         - "= (equal sign), > (greater than), < (less than), ' (single quote)."
         type: str
 
@@ -45,7 +45,7 @@ options:
         - A user-defined description of the organization.
         - Enter up to 256 characters.
         - "You can use any characters or spaces except the following:"
-        - "` (accent mark), \ (backslash), ^ (carat), \" (double quote)
+        - "` (accent mark), \ (backslash), ^ (carat), \" (double quote)"
         - "= (equal sign), > (greater than), < (less than), ' (single quote)."
         aliases: [ descr ]
         type: str
