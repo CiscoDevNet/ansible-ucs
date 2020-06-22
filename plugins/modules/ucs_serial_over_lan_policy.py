@@ -25,15 +25,15 @@ extends_documentation_fragment: cisco.ucs.ucs
 options:
     state:
         description:
-        - If C(absent), will remove organization.
-        - If C(present), will create or update organization.
+        - If C(absent), will remove Serial Over Lan Policy.
+        - If C(present), will create or update Serial Over Lan Policy.
         choices: [absent, present]
         default: present
         type: str
 
     name:
         description:
-        - The name of the organization.
+        - The name of the serial over lan policy.
         - Enter up to 16 characters.
         - "You can use any characters or spaces except the following:"
         - "` (accent mark), \ (backslash), ^ (carat), \" (double quote)"
@@ -42,7 +42,7 @@ options:
 
     description:
         description:
-        - A user-defined description of the organization.
+        - A user-defined description of the serial over lan policy.
         - Enter up to 256 characters.
         - "You can use any characters or spaces except the following:"
         - "` (accent mark), \ (backslash), ^ (carat), \" (double quote)"
@@ -60,13 +60,13 @@ options:
 
     speed:
         description:
-        - The serial over lan transmission speed
+        - The transmission speed of the serial over lan policy.
         choices: [9600, 19200, 38400, 57600, 115200]
         type: str
 
     org_dn:
         description:
-        - Org dn (distinguished name)
+        - Org dn (distinguished name) of the serial over lan policy.
         default: org-root
         type: str
 
@@ -91,7 +91,7 @@ EXAMPLES = r'''
     speed: 115200
   delegate_to: localhost
 
-- name: Add UCS Serial Over Lan Policy
+- name: Add UCS Serial Over Lan Policy in Organization
   cisco.ucs.ucs_serial_over_lan:
     hostname: "{{ ucs_hostname }}"
     username: "{{ ucs_username }}"
@@ -104,7 +104,7 @@ EXAMPLES = r'''
     speed: 115200
   delegate_to: localhost
 
-- name: Update UCS Serial Over Lan Policy
+- name: Update UCS Serial Over Lan Policy in Organization
   cisco.ucs.ucs_serial_over_lan:
     hostname: "{{ ucs_hostname }}"
     username: "{{ ucs_username }}"
@@ -117,7 +117,7 @@ EXAMPLES = r'''
     speed: 38400
   delegate_to: localhost
 
-- name: Update UCS Serial Over Lan Policy
+- name: Update UCS Serial Over Lan Policy in Organization
   cisco.ucs.ucs_serial_over_lan:
     hostname: "{{ ucs_hostname }}"
     username: "{{ ucs_username }}"
@@ -130,7 +130,7 @@ EXAMPLES = r'''
     speed: 57600
   delegate_to: localhost
 
-- name: Delete UCS Serial Over Lan Policy
+- name: Delete UCS Serial Over Lan Policy in Organization
   cisco.ucs.ucs_serial_over_lan:
     hostname: "{{ ucs_hostname }}"
     username: "{{ ucs_username }}"
