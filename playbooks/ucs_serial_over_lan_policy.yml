@@ -30,7 +30,7 @@
       delegate_to: localhost
 
     - name: Add UCS Serial Over Lan Policy
-      cisco.ucs.ucs_serial_over_lan:
+      cisco.ucs.ucs_serial_over_lan_policy:
         <<: *login_info
         state: present
         org_dn: "org-root/org-{{ org }}"
@@ -41,7 +41,7 @@
       delegate_to: localhost
 
     - name: Check Serial Over Lan
-      cisco.ucs.ucs_serial_over_lan:
+      cisco.ucs.ucs_serial_over_lan_policy:
         <<: *login_info
         state: present
         org_dn: "org-root/org-{{ org }}"
@@ -53,7 +53,7 @@
       check_mode: True
 
     - name: Add Serial Over Lan
-      cisco.ucs.ucs_serial_over_lan:
+      cisco.ucs.ucs_serial_over_lan_policy:
         <<: *login_info
         state: present
         name: sol_pol
@@ -63,7 +63,7 @@
       delegate_to: localhost
 
     - name: Idempotent Serial Over Lan
-      cisco.ucs.ucs_serial_over_lan:
+      cisco.ucs.ucs_serial_over_lan_policy:
         <<: *login_info
         state: present
         name: sol_pol
@@ -73,7 +73,7 @@
       delegate_to: localhost
 
     - name: Check Update Serial Over Lan
-      cisco.ucs.ucs_serial_over_lan:
+      cisco.ucs.ucs_serial_over_lan_policy:
         <<: *login_info
         state: present
         name: sol_pol
@@ -84,7 +84,7 @@
       check_mode: true
 
     - name: Update Serial Over Lan
-      cisco.ucs.ucs_serial_over_lan:
+      cisco.ucs.ucs_serial_over_lan_policy:
         <<: *login_info
         state: present
         name: sol_pol
@@ -94,7 +94,7 @@
       delegate_to: localhost
 
     - name: Delete Serial Over Lan
-      cisco.ucs.ucs_serial_over_lan:
+      cisco.ucs.ucs_serial_over_lan_policy:
         <<: *login_info
         state: absent
         name: sol_pol
