@@ -189,10 +189,16 @@ def main():
     # UCSModule verifies ucsmsdk is present and exits on failure.
     # Imports are below for UCS object creation.
     ucs = UCSModule(module)
-    from ucsmsdk.mometa.sol.SolPolicy import SolPolicy
+    from importlib import import_module
     from ucsmsdk.ucscoreutils import get_meta_info
 
-    META = get_meta_info(class_id="SolPolicy")
+    # The Class(es) this module is managing
+    module_file = 'ucsmsdk.mometa.sol.SolPolicy'
+    module_class = 'SolPolicy'
+    mo_module = import_module(module_file)
+    mo_class = getattr(mo_module, module_class)
+    
+    META = get_meta_info(class_id=module_class)
 
     err = False
     changed = False
@@ -245,7 +251,7 @@ def main():
                 kwargs['parent_mo_or_dn'] = module.params['org_dn']
                 kwargs['name'] = module.params['name']
 
-                mo = SolPolicy(**kwargs)
+                mo = mo_class(**kwargs)
                 ucs.login_handle.add_mo(mo, modify_present=True)
             ucs.login_handle.commit()
 
