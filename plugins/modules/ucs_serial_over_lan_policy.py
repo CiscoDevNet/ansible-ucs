@@ -38,6 +38,7 @@ options:
         - "You can use any characters or spaces except the following:"
         - "` (accent mark), \ (backslash), ^ (carat), \" (double quote)"
         - "= (equal sign), > (greater than), < (less than), ' (single quote)."
+        required: true
         type: str
 
     description:
