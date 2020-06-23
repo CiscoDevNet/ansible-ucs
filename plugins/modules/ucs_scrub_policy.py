@@ -200,8 +200,8 @@ RETURN = r'''
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.ucs.plugins.module_utils.ucs import (
-  UCSModule,
-  ucs_argument_spec
+    UCSModule,
+    ucs_argument_spec
 )
 
 
@@ -217,9 +217,9 @@ def main():
         flex_flash_scrub=dict(type='str', choices=['yes', 'no']),
         persistent_memory_scrub=dict(type='str', choices=['yes', 'no']),
         state=dict(
-          type='str', default='present',
-          choices=['present', 'absent']
-          ),
+            type='str', default='present',
+            choices=['present', 'absent']
+        ),
     )
 
     module = AnsibleModule(
@@ -258,19 +258,20 @@ def main():
 
     # Manage Attributes
     for attribute in [
-      'bios_settings_scrub',
-      'descr' ,'disk_scrub',
-      'flex_flash_scrub',
-      'persistent_memory_scrub'
+            'bios_settings_scrub',
+            'descr',
+            'disk_scrub',
+            'flex_flash_scrub',
+            'persistent_memory_scrub'
     ]:
         if module.params[attribute] is not None:
             kwargs[attribute] = module.params[attribute]
 
     try:
         dn = (
-          module.params['org_dn'] + '/' +
-          META.rn[0:META.rn.index('-') + 1] +
-          module.params['name']
+            module.params['org_dn'] + '/'+
+            META.rn[0:META.rn.index('-') + 1] +
+            module.params['name']
         )
         mo = ucs.login_handle.query_dn(dn)
 
