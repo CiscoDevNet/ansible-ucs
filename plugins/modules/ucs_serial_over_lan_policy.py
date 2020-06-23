@@ -157,8 +157,8 @@ RETURN = r'''
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.ucs.plugins.module_utils.ucs import (
-  UCSModule,
-  ucs_argument_spec
+    UCSModule,
+    ucs_argument_spec
 )
 
 
@@ -171,12 +171,12 @@ def main():
         description=dict(type='str', aliases=['descr']),
         admin_state=dict(type='str', choices=['enable', 'disable']),
         speed=dict(type='str', choices=[
-          '9600', '19200', '38400', '57600', '115200'
+            '9600', '19200', '38400', '57600', '115200'
         ]),
         state=dict(
-          type='str', default='present',
-          choices=['present', 'absent']
-          ),
+            type='str', default='present',
+            choices=['present', 'absent']
+        ),
     )
 
     module = AnsibleModule(
@@ -198,7 +198,7 @@ def main():
     module_class = 'SolPolicy'
     mo_module = import_module(module_file)
     mo_class = getattr(mo_module, module_class)
-    
+
     META = get_meta_info(class_id=module_class)
 
     err = False
@@ -220,9 +220,9 @@ def main():
 
     try:
         dn = (
-          module.params['org_dn'] + '/' +
-          META.rn[0:META.rn.index('-') + 1] +
-          module.params['name']
+            module.params['org_dn'] + '/' +
+            META.rn[0:META.rn.index('-') + 1] +
+            module.params['name']
         )
         mo = ucs.login_handle.query_dn(dn)
 
