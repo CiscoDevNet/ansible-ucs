@@ -10,6 +10,7 @@ __pycache__/
 .vscode/
 collections/
 ansible.cfg
+args/
 
 # Distribution / packaging
 .Python
