@@ -2,18 +2,44 @@
 
 ### Current Development Status
 
+These object specific modules cover a very small set of UCS Manager managed objects. For UCS objects that do not
+have a specific module below use `ucs_managed_objects`. This module accepts either JSON or YAML
+when used as a task in a playbook. Review `playbooks/ucs_managed_objects` playbook for examples.
+
 | Configuration Category | Configuration Task | Module Name |
 | ---------------------- | ------------------ | ----------- |
-| LAN                    | IP Addresses for KVM Access | ucs_ip_pool |
-|                        | MAC Address Pools  | ucs_mac_pool |
-|                        | VLANs              | ucs_vlans   | in 2.5 |
-| Server                 | UUID Suffix Pool   | ucs_uuid_pool |
-|                        | Server Pool        | use ucs_managed_objects, see server_deploy.yml
-|                        | Server BIOS Policy | use ucs_managed_objects
-|                        | FW/Power/Maintenance Polices | use ucs_managed_objects
-|                        | Boot Policy        | use ucs_managed_objects, see server_deploy.yml
-|                        | Service Profile Template | ucs_service_profile_template |
-|                        | Service Profile from Template | ucs_service_profile_from_template |
+| Objects        | | |
+|                        | Any UCS Object | cisco.ucs.ucs_managed_objects |
+| Query                  | | |
+|                        | Query Classes or DNs | cisco.ucs.ucs_query |
+|                        | VLAN Find | cisco.ucs.ucs_vlan_find
+| Organizations          | | |
+|                        | Organizations | cisco.ucs.ucs_org |
+| Servers                | | |
+|                        | Scrub Policy | cisco.ucs.ucs_scrub_policy |
+|                        | Serial Over Lan Policy | cisco.ucs.ucs_serial_over_lan_policy |
+|                        | Service Profile Template | cisco.ucs.ucs_service_profile_template |
+|                        | Service Profile from Template | cisco.ucs.ucs_service_profile_from_template |
+|                        | UUID Suffix Pool | cisco.ucs.ucs_uuid_pool |
+| LAN                    | | |
+|                        | IP Addresses for KVM Access | cisco.ucs.ucs_ip_pool |
+|                        | LAN Connectivity Policy | cisco.ucs.ucs_lan_connectivity |
+|                        | MAC Address Pools | cisco.ucs.ucs_mac_pool |
+|                        | System QOS | cisco.ucs.ucs_system_qos |
+|                        | vNIC Template | cisco.ucs.ucs_vnic_template |
+|                        | VLANs | cisco.ucs.ucs_vlans |
+| SAN                    | | |
+|                        | SAN Connectivity Policy | cisco.ucs.ucs_san_connectivity |
+|                        | vHBA Template | cisco.ucs.ucs_vhba_template |
+|                        | VSANs | cisco.ucs.ucs_vsans |
+|                        | WWN Pool | cisco.ucs.ucs_wwn_pool |
+| Storage                | | |
+|                        | Disk Group Policy | cisco.ucs.ucs_disk_group_policy |
+|                        | Storage Profile | cisco.ucs.ucs_storage_profile |
+| Admin                  | | |
+|                        | DNS Server | cisco.ucs.ucs_dns_server |
+|                        | NTP Server | cisco.ucs.ucs_ntp_server |
+|                        | Time Zone | cisco.ucs.ucs_timezone |
 
 ### Ansible Development Notes
 
