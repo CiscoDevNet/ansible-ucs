@@ -269,7 +269,7 @@ def main():
 
     try:
         dn = (
-            module.params['org_dn'] + '/'+
+            module.params['org_dn'] + '/' +
             META.rn[0:META.rn.index('-') + 1] +
             module.params['name']
         )
