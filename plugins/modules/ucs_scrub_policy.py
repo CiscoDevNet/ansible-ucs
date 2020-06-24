@@ -145,7 +145,7 @@ EXAMPLES = r'''
     persistent_memory_scrub: yes
   delegate_to: localhost
 
-- name: Update UCS Serial Over Lan Policy
+- name: Update UCS Scrub Policy
   cisco.ucs.ucs_scrub_policy:
     hostname: "{{ ucs_hostname }}"
     username: "{{ ucs_username }}"
@@ -160,7 +160,7 @@ EXAMPLES = r'''
     persistent_memory_scrub: no
   delegate_to: localhost
 
-- name: Update UCS Serial Over Lan Policy
+- name: Update UCS Scrub Policy
   cisco.ucs.ucs_scrub_policy:
     hostname: "{{ ucs_hostname }}"
     username: "{{ ucs_username }}"
@@ -174,7 +174,7 @@ EXAMPLES = r'''
     flex_flash_scrub: yes
   delegate_to: localhost
 
-- name: Delete UCS Serial Over Lan Policy
+- name: Delete UCS Scrub Policy
   cisco.ucs.ucs_scrub_policy:
     hostname: "{{ ucs_hostname }}"
     username: "{{ ucs_username }}"
@@ -184,7 +184,7 @@ EXAMPLES = r'''
     name: BD_scrub
   delegate_to: localhost
 
-- name: Delete UCS Serial Over Lan Policy
+- name: Delete UCS Scrub Policy
   cisco.ucs.ucs_scrub_policy:
     hostname: "{{ ucs_hostname }}"
     username: "{{ ucs_username }}"
