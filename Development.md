@@ -16,6 +16,7 @@ when used as a task in a playbook. Review `playbooks/ucs_managed_objects` playbo
 | Organizations          | | |
 |                        | Organizations | cisco.ucs.ucs_org |
 | Servers                | | |
+|                        | Graphics Card Policy | cisco.ucs.ucs_graphics_card_policy |
 |                        | Scrub Policy | cisco.ucs.ucs_scrub_policy |
 |                        | Serial Over Lan Policy | cisco.ucs.ucs_serial_over_lan_policy |
 |                        | Service Profile Template | cisco.ucs.ucs_service_profile_template |
