@@ -11,4 +11,4 @@
     <<: *login_info
     name: "{{ profile_name }}-{{ '%d' | format(item) }}"
     source_template: "{{ template_name }}"
-  loop: "{{ range(1, num_profiles + 1) | list }}"
+  loop: "{{ range(1, num_profiles|int + 1) | list }}"
