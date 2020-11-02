@@ -15,6 +15,9 @@
     hostname: "{{ inventory_hostname }}"
     # Names for Service Profiles, Policies, and number of Profiles
     template_name: auto-template
+    template_type: updating-template
+    host_firmware_package: ansible-latest
+    maintenance_policy: user-ack
     vmedia_policy: cdd-nfs
     profile_name: auto-profile
     num_profiles: 2

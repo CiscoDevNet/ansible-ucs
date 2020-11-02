@@ -10,7 +10,9 @@
   cisco.ucs.ucs_service_profile_template:
     <<: *login_info
     name: "{{ template_name }}"
-    template_type: updating-template
+    template_type: "{{ template_type }}"
+    host_firmware_package: "{{ host_firmware_package }}"
     server_pool: default
     vmedia_policy: "{{ vmedia_policy }}"
     boot_policy: vmedia-local
+    maintenance_policy: "{{ maintenance_policy }}"
