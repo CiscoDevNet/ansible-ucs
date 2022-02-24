@@ -47,6 +47,10 @@ options:
     description:
     - Org dn (distinguished name)
     default: org-root
+  description:
+    description:
+    - Optional
+    - The Description of the service profile
 requirements:
 - ucsmsdk
 author:
@@ -63,6 +67,7 @@ EXAMPLES = r'''
     password: password
     name: test-sp-instance1
     source_template: test-sp
+    discription: Created from Ansible
 
 - name: Remove Service Profile
   cisco.ucs.ucs_service_profile_from_template:
@@ -90,6 +95,7 @@ def main():
         user_label=dict(type='str', default=''),
         power_state=dict(type='str', choices=['up', 'down']),
         state=dict(type='str', default='present', choices=['present', 'absent']),
+        description=dict(type='str', default=''),
     )
 
     module = AnsibleModule(
@@ -151,6 +157,7 @@ def main():
                         src_templ_name=module.params['source_template'],
                         type='instance',
                         usr_lbl=module.params['user_label'],
+                        descr=module.params['description'],
                     )
                     if module.params.get('power_state'):
                         admin_state = 'admin-' + module.params['power_state']
