@@ -50,7 +50,7 @@ options:
     choices: [on-next-boot]
   uptime_disr:
     description:
-    - When a Server profile is associated with a Server, or when changes are made to a Server profile that is already associated with a Server, you must reboot the Server to complete the process.
+    - When a Server profile is associated with a Server, or when changes are made to an associated Server profile, you must reboot the Server.
     - The Reboot Policy field determines when the reboot occurs for Server associated with any Server profiles that include this maintenance policy.
     choices: [immediate, timer-automatic, user-ack]
     required: true
