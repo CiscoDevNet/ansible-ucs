@@ -27,12 +27,16 @@
 # USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 import traceback
 
 from ansible.module_utils.basic import missing_required_lib
 
 UCSMSDK_IMP_ERR = None
 try:
+    # import done here to provide common import check for all modules
+    # pylint: disable=unused-import
     import ucsmsdk
     HAS_UCSMSDK = True
 except Exception:

@@ -96,41 +96,11 @@
           - module: ucsmsdk.mometa.compute.ComputePooledSlot
             class: ComputePooledSlot
             properties:
-              chassis_id: '1'
+              chassis_id: '4'
               slot_id: '1'
           - module: ucsmsdk.mometa.compute.ComputePooledSlot
             class: ComputePooledSlot
             properties:
-              chassis_id: '1'
+              chassis_id: '4'
               slot_id: '2'
-          - module: ucsmsdk.mometa.compute.ComputePooledSlot
-            class: ComputePooledSlot
-            properties:
-              chassis_id: '1'
-              slot_id: '3'
-          - module: ucsmsdk.mometa.compute.ComputePooledSlot
-            class: ComputePooledSlot
-            properties:
-              chassis_id: '1'
-              slot_id: '4'
-          - module: ucsmsdk.mometa.compute.ComputePooledSlot
-            class: ComputePooledSlot
-            properties:
-              chassis_id: '1'
-              slot_id: '5'
-          - module: ucsmsdk.mometa.compute.ComputePooledSlot
-            class: ComputePooledSlot
-            properties:
-              chassis_id: '1'
-              slot_id: '6'
-          - module: ucsmsdk.mometa.compute.ComputePooledSlot
-            class: ComputePooledSlot
-            properties:
-              chassis_id: '1'
-              slot_id: '7'
-          - module: ucsmsdk.mometa.compute.ComputePooledSlot
-            class: ComputePooledSlot
-            properties:
-              chassis_id: '1'
-              slot_id: '8'
   tags: server_pool

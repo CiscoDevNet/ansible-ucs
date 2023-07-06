@@ -84,7 +84,6 @@ EXAMPLES = r'''
 RETURN = r'''
 #
 '''
-from ucsmsdk.mometa.comm.CommDnsProvider import CommDnsProvider
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.ucs.plugins.module_utils.ucs import UCSModule, ucs_argument_spec
@@ -109,7 +108,7 @@ def run_module():
     # UCSModule verifies ucsmsdk is present and exits on failure.
     # Imports are below for UCS object creation.
     ucs = UCSModule(module)
-    # from ucsmsdk.mometa.comm.CommDnsProvider import CommDnsProvider
+    from ucsmsdk.mometa.comm.CommDnsProvider import CommDnsProvider
 
     err = False
     changed = False

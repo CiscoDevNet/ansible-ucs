@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure Disk Group Policy
       cisco.ucs.ucs_disk_group_policy:
@@ -38,6 +38,7 @@
         - slot_num: '2'
           role: normal
         org_dn: org-root/org-level1
+      delegate_to: localhost
 
     - name: Remove Disk from Policy
       cisco.ucs.ucs_disk_group_policy:
@@ -57,6 +58,7 @@
           io_policy: direct
           strip_size: 64KB
         org_dn: org-root/org-level1
+      delegate_to: localhost
 
     - name: Remove Disk Group Policy
       cisco.ucs.ucs_disk_group_policy:
@@ -64,6 +66,7 @@
         name: DEE-DG
         state: absent
         org_dn: org-root/org-level1
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -71,4 +74,4 @@
         org_name: level1
         parent_org_path: root
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost

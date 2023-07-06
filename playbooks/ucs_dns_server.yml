@@ -23,11 +23,11 @@
         dns_server: 10.10.10.10
         description: DNS Server IP address
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Remove DNS server
       cisco.ucs.ucs_dns_server:
         <<: *login_info
         dns_server: 10.10.10.10
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost
