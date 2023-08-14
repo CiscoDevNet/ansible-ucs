@@ -26,6 +26,7 @@ options:
     - If C(absent), will verify that the disk group policy is absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the disk group policy.
@@ -33,6 +34,7 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the policy is created.
     required: yes
+    type: str
   description:
     description:
     - The user-defined description of the storage profile.
@@ -40,6 +42,7 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   raid_level:
     description:
     - "The RAID level for the disk group policy. This can be one of the following:"
@@ -52,6 +55,7 @@ options:
     - "stripe-dual-parity-stripe - RAID 60 Striped Dual Parity and Striped"
     choices: [stripe, mirror, mirror-stripe, stripe-parity, stripe-dual-parity, stripe-parity-stripe, stripe-dual-parity-stripe]
     default: stripe
+    type: str
   configuration_mode:
     description:
     - "Disk group configuration mode. Choose one of the following:"
@@ -59,12 +63,14 @@ options:
     - "manual - Enables you to manually configure the disks in the disk group."
     choices: [automatic, manual]
     default: automatic
+    type: str
   num_drives:
     description:
     - Specify the number of drives for the disk group.
     - This can be from 0 to 24.
     - Option only applies when configuration mode is automatic.
-    default: 1
+    default: '1'
+    type: str
   drive_type:
     description:
     - Specify the drive type to use in the drive group.
@@ -75,96 +81,114 @@ options:
     - Option only applies when configuration mode is automatic.
     choices: [unspecified, HDD, SSD]
     default: unspecified
+    type: str
   num_ded_hot_spares:
     description:
     - Specify the number of hot spares for the disk group.
     - This can be from 0 to 24.
     - Option only applies when configuration mode is automatic.
     default: unspecified
+    type: str
   num_glob_hot_spares:
     description:
     - Specify the number of global hot spares for the disk group.
     - This can be from 0 to 24.
     - Option only applies when configuration mode is automatic.
     default: unspecified
+    type: str
   min_drive_size:
     description:
     - Specify the minimum drive size or unspecified to allow all drive sizes.
     - This can be from 0 to 10240 GB.
     - Option only applies when configuration mode is automatic.
     default: 'unspecified'
+    type: str
   use_remaining_disks:
     description:
     - Specifies whether you can use all the remaining disks in the disk group or not.
     - Option only applies when configuration mode is automatic.
     choices: ['yes', 'no']
     default: 'no'
+    type: str
   manual_disks:
     description:
     - List of manually configured disks.
     - Options are only used when you choose manual configuration_mode.
+    type: list
+    elements: dict
     suboptions:
-      name:
-        description:
-        - The name of the local LUN.
-        required: yes
       slot_num:
         description:
         - The slot number of the specific disk.
+        type: str
+        required: yes
       role:
         description:
         - "The role of the disk. This can be one of the following:"
         - "normal - Normal"
         - "ded-hot-spare - Dedicated Hot Spare"
         - "glob-hot-spare - Glob Hot Spare"
+        choices: [normal, ded-hot-spare, glob-hot-spare]
+        default: normal
+        type: str
       span_id:
         description:
         - The Span ID of the specific disk.
         default: 'unspecified'
+        type: str
       state:
         description:
         - If C(present), will verify disk slot is configured within policy.
           If C(absent), will verify disk slot is absent from policy.
         choices: [ present, absent ]
         default: present
+        type: str
   virtual_drive:
     description:
     - Configuration of virtual drive options.
+    type: dict
     suboptions:
       access_policy:
         description:
         - Configure access policy to virtual drive.
         choices: [blocked, hidden, platform-default, read-only, read-write, transport-ready]
         default: platform-default
+        type: str
       drive_cache:
         description:
         - Configure drive caching.
         choices: [disable, enable, no-change, platform-default]
         default: platform-default
+        type: str
       io_policy:
         description:
         - Direct or Cached IO path.
         choices: [cached, direct, platform-default]
         default: platform-default
+        type: str
       read_policy:
         description:
         - Read access policy to virtual drive.
         choices: [normal, platform-default, read-ahead]
         default: platform-default
+        type: str
       strip_size:
         description:
         - Virtual drive strip size.
-        choices: [ present, absent ]
+        choices: [1024KB, 128KB, 16KB, 256KB, 32KB, 512KB, 64KB, 8KB, platform-default]
         default: platform-default
+        type: str
       write_cache_policy:
         description:
         - Write back cache policy.
         choices: [always-write-back, platform-default, write-back-good-bbu, write-through]
         default: platform-default
+        type: str
   org_dn:
     description:
     - The distinguished name (dn) of the organization where the resource is assigned.
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
@@ -173,7 +197,6 @@ author:
 - CiscoUcs (@CiscoUcs)
 - Brett Johnson (@sdbrett)
 - John McDonough (@movinalot)
-version_added: '2.8'
 '''
 
 EXAMPLES = r'''
@@ -366,7 +389,7 @@ def main():
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),
-        description=dict(type='str', aliases=['descr'], default=''),
+        description=dict(type='str', aliases=['descr']),
         raid_level=dict(
             type='str',
             default='stripe',

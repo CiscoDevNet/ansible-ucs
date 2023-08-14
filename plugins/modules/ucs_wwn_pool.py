@@ -24,6 +24,7 @@ options:
     - If C(absent), will verify WWNNs/WWPNs are absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the World Wide Node Name (WWNN) or World Wide Port Name (WWPN) pool.
@@ -31,12 +32,14 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the WWNN or WWPN pool is created.
     required: yes
+    type: str
   purpose:
     description:
     - Specify whether this is a node (WWNN) or port (WWPN) pool.
     - Optional if state is absent.
     choices: [node, port]
     required: yes
+    type: str
   description:
     description:
     - A description of the WWNN or WWPN pool.
@@ -44,6 +47,7 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   order:
     description:
     - The Assignment Order field.
@@ -52,10 +56,12 @@ options:
     - "sequential - Cisco UCS Manager selects the lowest available identity from the pool."
     choices: [default, sequential]
     default: default
+    type: str
   first_addr:
     description:
     - The first initiator in the World Wide Name (WWN) block.
     - This is the From field in the UCS Manager Add WWN Blocks menu.
+    type: str
   last_addr:
     description:
     - The last initiator in the World Wide Name (WWN) block.
@@ -63,10 +69,12 @@ options:
     - For WWxN pools, the pool size must be a multiple of ports-per-node + 1.
     - For example, if there are 7 ports per node, the pool size must be a multiple of 8.
     - If there are 63 ports per node, the pool size must be a multiple of 64.
+    type: str
   org_dn:
     description:
     - Org dn (distinguished name)
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
