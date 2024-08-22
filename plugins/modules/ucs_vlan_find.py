@@ -83,7 +83,7 @@ from ansible_collections.cisco.ucs.plugins.module_utils.ucs import UCSModule, uc
 
 
 def main():
-    argument_spec = ucs_argument_spec
+    argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         fabric=dict(type='str', default='common', choices=['common', 'A', 'B']),
         pattern=dict(type='str'),

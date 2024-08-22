@@ -220,7 +220,7 @@ def main():
         properties=dict(type='dict', required=True),
         children=dict(type='list'),
     )
-    argument_spec = ucs_argument_spec
+    argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         objects=dict(type='list', elements='dict', options=object_dict, required=True),
         state=dict(type='str', choices=['present', 'absent'], default='present'),

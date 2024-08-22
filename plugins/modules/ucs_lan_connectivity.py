@@ -311,7 +311,7 @@ def main():
         state=dict(type='str', default='present', choices=['present', 'absent']),
     )
 
-    argument_spec = ucs_argument_spec
+    argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),

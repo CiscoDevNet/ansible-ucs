@@ -89,7 +89,7 @@ from ansible_collections.cisco.ucs.plugins.module_utils.ucs import UCSModule, uc
 
 
 def run_module():
-    argument_spec = ucs_argument_spec
+    argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         timezone=dict(type='str'),
         description=dict(type='str', aliases=['descr'], default=''),

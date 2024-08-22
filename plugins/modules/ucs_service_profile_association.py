@@ -117,7 +117,7 @@ from ansible_collections.cisco.ucs.plugins.module_utils.ucs import UCSModule, uc
 
 
 def main():
-    argument_spec = ucs_argument_spec
+    argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         service_profile_name=dict(type='str', required=True),
