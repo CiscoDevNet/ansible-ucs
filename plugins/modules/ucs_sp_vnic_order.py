@@ -175,7 +175,7 @@ def main():
         transport=dict(type='str', required=True, choices=['ethernet', 'fc']),
         state=dict(type='str', default='present', choices=['present', 'absent']),
     )
-    argument_spec = ucs_argument_spec
+    argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         sp_name=dict(required=True, type='str'),
         vnics=dict(required=True, type='list', elements='dict', options=vnic_spec),

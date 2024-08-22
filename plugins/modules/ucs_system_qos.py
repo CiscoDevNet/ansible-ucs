@@ -70,7 +70,7 @@ from ansible_collections.cisco.ucs.plugins.module_utils.ucs import UCSModule, uc
 
 # TODO Add ranges for cos, weight and mtu
 def main():
-    argument_spec = ucs_argument_spec
+    argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         priority=dict(required=True, type='str', choices=["best-effort", "bronze", "fc", "gold", "platinum", "silver"]),
         cos=dict(required=True, type='str'),

@@ -142,7 +142,7 @@ def main():
         fractional_size=dict(type='str', default='0'),
         disk_policy_name=dict(type='str', default=''),
     )
-    argument_spec = ucs_argument_spec
+    argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),

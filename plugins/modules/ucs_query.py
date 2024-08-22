@@ -109,7 +109,7 @@ def make_mo_dict(ucs_mo):
 
 
 def main():
-    argument_spec = ucs_argument_spec
+    argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         class_ids=dict(type='str'),
         distinguished_names=dict(type='str'),
