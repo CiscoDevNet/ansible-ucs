@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure LAN Connectivity Policy
       cisco.ucs.ucs_lan_connectivity:
@@ -50,6 +50,7 @@
           overlay_vnic: eno3
           iscsi_adapter_policy: default
           vlan_name: Container-TNT-A-NFS
+      delegate_to: localhost
       
     - name: Remove LAN Connectivity Policy
       cisco.ucs.ucs_lan_connectivity:
@@ -57,6 +58,7 @@
         name: Cntr-FC-Boot
         org_dn: org-root/org-level1
         state: absent
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -64,4 +66,4 @@
         org_name: level1
         parent_org_path: root
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost

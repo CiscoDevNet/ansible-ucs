@@ -15,7 +15,6 @@ DOCUMENTATION = r'''
 ---
 module: ucs_server_maintenance
 short_description: Creates Server Maintenance Policy on Cisco UCS Manager
-version_added: 2.10
 description:
 - Configures Server Maintenance Policy on Cisco UCS Manager.
 extends_documentation_fragment: cisco.ucs.ucs
@@ -26,6 +25,7 @@ options:
     - If C(absent), will verify Server Maintenance Policy is absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name assigned to the Server Maintenance Policy.
@@ -34,6 +34,7 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the Server Maintenance Policy is created.
     required: yes
+    type: str
   description:
     description:
     - A description of the Server Maintenance Package Policy.
@@ -42,18 +43,21 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   trigger_config:
     description:
     - This option is used in combination with either User Ack (user-ack) or Timer Automatic (timer-automatic).
     - When the On Next Boot option is enabled, the host OS reboot, shutdown, or server reset also triggers the associated FSM to apply the changes.
     - Note that de-selecting the On Next Boot option disables the Maintenance Policy on the BMC.
     choices: [on-next-boot]
+    type: str
   uptime_disr:
     description:
     - When a Server profile is associated with a Server, or when changes are made to an associated Server profile, you must reboot the Server.
     - The Reboot Policy field determines when the reboot occurs for Server associated with any Server profiles that include this maintenance policy.
     choices: [immediate, timer-automatic, user-ack]
     required: true
+    type: str
 requirements:
 - ucsmsdk
 author:
@@ -83,8 +87,8 @@ def main():
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         name=dict(type='str', required=True),
-        description=dict(type='str', default=''),
-        trigger_config=dict(type='str', default='', choices=['on-next-boot']),
+        description=dict(type='str', aliases=['descr']),
+        trigger_config=dict(type='str', choices=['on-next-boot']),
         uptime_disr=dict(type='str', required=True, choices=['immediate', 'timer-automatic', 'user-ack']),
         state=dict(type='str', default='present', choices=['present', 'absent']),
     )

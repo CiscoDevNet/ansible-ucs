@@ -24,10 +24,12 @@ options:
     - If C(absent), will verify service profile is not associated and will disassociate if needed.  This is the same as specifying Assign Later in the webUI.
     choices: [present, absent]
     default: present
+    type: str
   service_profile_name:
     description:
     - The name of the Service Profile being associated or disassociated.
-    required: yes
+    required: true
+    type: str
   server_assignment:
     description:
     - "Specifies how to associate servers with this service profile using the following choices:"
@@ -36,17 +38,19 @@ options:
     - Option is not valid if the service profile is bound to a template.
     - Optional if the state is absent.
     choices: [server, pool]
-    required: yes
+    type: str
   server_dn:
     description:
     - The Distinguished Name (dn) of the server object used for pre-provisioning or selecting an existing server.
     - Required if the server_assignment option is server.
     - Optional if the state is absent.
+    type: str
   server_pool_name:
     description:
     - Name of the server pool used for server pool based assignment.
     - Required if the server_assignment option is pool.
     - Optional if the state is absent.
+    type: str
   restrict_migration:
     description:
     - Restricts the migration of the service profile after it has been associated with a server.
@@ -54,16 +58,17 @@ options:
     - If set to no and the hardware of both servers used in migration are not similar, the association might fail.
     choices: ['yes', 'no']
     default: 'no'
+    type: str
   org_dn:
     description:
     - The distinguished name (dn) of the organization where the resource is assigned.
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - CiscoUcs (@CiscoUcs)
-version_added: 2.10
 '''
 
 EXAMPLES = r'''
@@ -103,12 +108,12 @@ RETURN = r'''
 assign_state:
   description: The logical server Assigned State (assigned, unassigned, or failed).
   returned: success
-  type: string
+  type: str
   sample: assigned
 assoc_state:
   description: The logical server Association State (associated or unassociated).
   returned: success
-  type: string
+  type: str
   sample: associated
 '''
 

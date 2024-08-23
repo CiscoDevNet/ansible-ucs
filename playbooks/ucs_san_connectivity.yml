@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure SAN Connectivity Policy
       cisco.ucs.ucs_san_connectivity:
@@ -39,6 +39,7 @@
         - name: Fabric-B
           vhba_template: vHBA-Template-B
           adapter_policy: Linux
+      delegate_to: localhost
       
     - name: Remove SAN Connectivity Policy
       cisco.ucs.ucs_san_connectivity:
@@ -46,6 +47,7 @@
         name: Cntr-FC-Boot
         org_dn: org-root/org-level1
         state: absent
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -53,4 +55,4 @@
         org_name: level1
         parent_org_path: root
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost

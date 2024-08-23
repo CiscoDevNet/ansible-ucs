@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure MAC address pool
       cisco.ucs.ucs_mac_pool:
@@ -34,6 +34,7 @@
         first_addr: 00:25:B5:00:66:00
         last_addr: 00:25:B5:00:67:F3
         order: sequential
+      delegate_to: localhost
 
     - name: Remove MAC address pool
       cisco.ucs.ucs_mac_pool:
@@ -41,6 +42,7 @@
         name: mac-A
         org_dn: org-root/org-level1
         state: absent
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -48,4 +50,4 @@
         org_name: level1
         parent_org_path: root
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost

@@ -26,8 +26,9 @@
       delegate_to: localhost
       register: result
       until: result.assign_state == 'assigned' and result.assoc_state == 'associated'
-      retries: 10
-      delay: 60
+      retries: 1
+      delay: 2
+      ignore_errors: true
 
     - name: Change Service Profile Association to Pool
       cisco.ucs.ucs_service_profile_association:
@@ -38,8 +39,9 @@
       delegate_to: localhost
       register: result
       until: result.assign_state == 'assigned' and result.assoc_state == 'associated'
-      retries: 10
-      delay: 60
+      retries: 1
+      delay: 2
+      ignore_errors: true
 
     - name: Disassociate Service Profile
       cisco.ucs.ucs_service_profile_association:
@@ -49,5 +51,6 @@
       delegate_to: localhost
       register: result
       until: result.assign_state == 'unassigned' and result.assoc_state == 'unassociated'
-      retries: 10
-      delay: 60
+      retries: 1
+      delay: 2
+      ignore_errors: true

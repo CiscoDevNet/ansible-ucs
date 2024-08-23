@@ -24,13 +24,14 @@ options:
     - If C(absent), will verify SAN Connectivity Policies are absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the SAN Connectivity Policy.
     - This name can be between 1 and 16 alphanumeric characters.
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the policy is created.
-    required: yes
+    type: str
   description:
     description:
     - A description of the policy.
@@ -39,37 +40,49 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   wwnn_pool:
     description:
     - Name of the WWNN pool to use for WWNN assignment.
     default: default
+    type: str
   vhba_list:
     description:
     - List of vHBAs used by the SAN Connectivity Policy.
     - vHBAs used by the SAN Connectivity Policy must be created from a vHBA template.
-    - "Each list element has the following suboptions:"
-    - "= name"
-    - "  The name of the virtual HBA (required)."
-    - "= vhba_template"
-    - "  The name of the virtual HBA template (required)."
-    - "- adapter_policy"
-    - "  The name of the Fibre Channel adapter policy."
-    - "  A user defined policy can be used, or one of the system defined policies (default, Linux, Solaris, VMware, Windows, WindowsBoot)"
-    - "  [Default: default]"
-    - "- order"
-    - "  String specifying the vHBA assignment order (e.g., '1', '2')."
-    - "  [Default: unspecified]"
+    type: list
+    elements: dict
+    suboptions:
+      name:
+        description:
+        - The name of the virtual HBA (required).
+        type: str
+      vhba_template:
+        description:
+        - The name of the virtual HBA template (required).
+        type: str
+      adapter_policy:
+        description:
+        - The name of the Fibre Channel adapter policy.
+        - A user defined policy can be used, or one of the system defined policies (default, Linux, Solaris, VMware, Windows, WindowsBoot)
+        default: default
+        type: str
+      order:
+        description:
+        - String specifying the vHBA assignment order (e.g., '1', '2').
+        default: unspecified
+        type: str
   org_dn:
     description:
     - Org dn (distinguished name)
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.5'
 '''
 
 EXAMPLES = r'''
@@ -106,30 +119,25 @@ from ansible_collections.cisco.ucs.plugins.module_utils.ucs import UCSModule, uc
 
 
 def main():
+    vhba_list = dict(
+        name=dict(type='str'),
+        vhba_template=dict(type='str'),
+        adapter_policy=dict(type='str', default='default'),
+        order=dict(type='str', default='unspecified'),
+    )
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str'),
-        descr=dict(type='str'),
+        description=dict(type='str', aliases=['descr']),
         wwnn_pool=dict(type='str', default='default'),
-        vhba_list=dict(type='list'),
+        vhba_list=dict(type='list', elements='dict', options=vhba_list),
         state=dict(type='str', default='present', choices=['present', 'absent']),
-        san_connectivity_list=dict(type='list'),
     )
-
-    # Note that use of san_connectivity_list is an experimental feature which allows multiple resource updates with a single UCSM connection.
-    # Support for san_connectivity_list may change or be removed once persistent UCS connections are supported.
-    # Either san_connectivity_list or name is required (user can specify either a list or single resource).
 
     module = AnsibleModule(
         argument_spec,
         supports_check_mode=True,
-        required_one_of=[
-            ['san_connectivity_list', 'name'],
-        ],
-        mutually_exclusive=[
-            ['san_connectivity_list', 'name'],
-        ],
     )
     ucs = UCSModule(module)
 
@@ -142,15 +150,7 @@ def main():
 
     changed = False
     try:
-        # Only documented use is a single resource, but to also support experimental
-        # feature allowing multiple updates all params are converted to a san_connectivity_list below.
-
-        if module.params['san_connectivity_list']:
-            # directly use the list (single resource and list are mutually exclusive
-            san_connectivity_list = module.params['san_connectivity_list']
-        else:
-            # single resource specified, create list from the current params
-            san_connectivity_list = [module.params]
+        san_connectivity_list = [module.params]
         for san_connectivity in san_connectivity_list:
             mo_exists = False
             props_match = False

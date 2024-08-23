@@ -62,7 +62,7 @@ options:
     speed:
         description:
         - The transmission speed of the serial over lan policy.
-        choices: [9600, 19200, 38400, 57600, 115200]
+        choices: ['9600', '19200', '38400', '57600', '115200']
         type: str
 
     org_dn:
@@ -76,7 +76,6 @@ requirements:
 
 author:
 - John McDonough (@movinalot)
-version_added: "2.9"
 '''
 
 EXAMPLES = r'''
@@ -167,7 +166,6 @@ def main():
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(required=True, type='str'),
-        descr=dict(type='str'),
         description=dict(type='str', aliases=['descr']),
         admin_state=dict(type='str', choices=['enable', 'disable']),
         speed=dict(type='str', choices=[
@@ -207,14 +205,8 @@ def main():
 
     kwargs = dict()
 
-    # Manage Aliased Attributes
-    for attribute in ['descr:description']:
-        attribute_alias = attribute.split(':')
-        if module.params[attribute_alias[1]] is not None:
-            kwargs[attribute_alias[0]] = module.params[attribute_alias[1]]
-
     # Manage Attributes
-    for attribute in ['admin_state', 'descr', 'speed']:
+    for attribute in ['admin_state', 'description', 'speed']:
         if module.params[attribute] is not None:
             kwargs[attribute] = module.params[attribute]
 

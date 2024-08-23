@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure Service Profile Template with LAN/SAN Connectivity and all other options defaulted
       cisco.ucs.ucs_service_profile_template:
@@ -42,6 +42,7 @@
         server_pool: Container-Pool
         host_firmware_package: 3.1.2b
         bios_policy: Docker
+      delegate_to: localhost
 
     - name: Configure Service Profile from Template
       cisco.ucs.ucs_service_profile_from_template:
@@ -51,6 +52,7 @@
         user_label: SP Instance
         power_state: down
         source_template: sp-template
+      delegate_to: localhost
 
     - name: Remove Service Profile Template
       cisco.ucs.ucs_service_profile_template:
@@ -58,6 +60,7 @@
         name: sp-template
         org_dn: org-root/org-level1
         state: absent
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -65,4 +68,4 @@
         org_name: level1
         parent_org_path: root
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost

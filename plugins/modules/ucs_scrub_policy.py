@@ -61,7 +61,7 @@ options:
         - preserved.
         - yes scrub the BIOS settings.
         - no do not scrub the BIOS settings.
-        choices: [yes, no]
+        choices: ['yes', 'no']
         type: str
 
     disk_scrub:
@@ -74,7 +74,7 @@ options:
         - configuration.
         - yes scrub the server disks.
         - no do not scrub the server disks.
-        choices: [yes, no]
+        choices: ['yes', 'no']
         type: str
 
     flex_flash_scrub:
@@ -85,7 +85,7 @@ options:
         - reacknowledged. If this field is set to No, the SD card is preserved.
         - yes scrub the flex flash.
         - no do not scrub the flex flash.
-        choices: [yes, no]
+        choices: ['yes', 'no']
         type: str
 
     persistent_memory_scrub:
@@ -98,7 +98,7 @@ options:
         - memory modules are preserved.
         - yes scrub the persistent memory.
         - no do not scrub the persistent memory.
-        choices: [yes, no]
+        choices: ['yes', 'no']
         type: str
 
     org_dn:
@@ -112,7 +112,6 @@ requirements:
 
 author:
 - John McDonough (@movinalot)
-version_added: "2.9"
 '''
 
 EXAMPLES = r'''
@@ -210,7 +209,6 @@ def main():
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(required=True, type='str'),
-        descr=dict(type='str'),
         description=dict(type='str', aliases=['descr']),
         bios_settings_scrub=dict(type='str', choices=['yes', 'no']),
         disk_scrub=dict(type='str', choices=['yes', 'no']),
@@ -250,16 +248,10 @@ def main():
 
     kwargs = dict()
 
-    # Manage Aliased Attributes
-    for attribute in ['descr:description']:
-        attribute_alias = attribute.split(':')
-        if module.params[attribute_alias[1]] is not None:
-            kwargs[attribute_alias[0]] = module.params[attribute_alias[1]]
-
     # Manage Attributes
     for attribute in [
             'bios_settings_scrub',
-            'descr',
+            'description',
             'disk_scrub',
             'flex_flash_scrub',
             'persistent_memory_scrub'
