@@ -24,6 +24,7 @@ options:
     - If C(absent), will verify VSANs are absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name assigned to the VSAN.
@@ -31,19 +32,20 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the VSAN is created.
     required: yes
+    type: str
   vsan_id:
     description:
     - The unique identifier assigned to the VSAN.
     - The ID can be a string between '1' and '4078', or between '4080' and '4093'. '4079' is a reserved VSAN ID.
     - In addition, if you plan to use FC end-host mode, the range between '3840' to '4079' is also a reserved VSAN ID range.
     - Optional if state is absent.
-    required: yes
+    type: str
   vlan_id:
     description:
     - The unique string identifier assigned to the VLAN used for Fibre Channel connections.
     - Note that Cisco UCS Manager uses VLAN '4048'.  See the UCS Manager configuration guide if you want to assign '4048' to a VLAN.
     - Optional if state is absent.
-    required: yes
+    type: str
   fc_zoning:
     description:
     - Fibre Channel zoning configuration for the Cisco UCS domain.
@@ -53,6 +55,7 @@ options:
     - If you enable Fibre Channel zoning, do not configure the upstream switch with any VSANs that are being used for Fibre Channel zoning.
     choices: [disabled, enabled]
     default: disabled
+    type: str
   fabric:
     description:
     - "The fabric configuration of the VSAN.  This can be one of the following:"
@@ -61,13 +64,13 @@ options:
     - "B - The VSAN maps to the a VSAN ID that exists only in fabric B."
     choices: [common, A, B]
     default: common
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.5'
 '''
 
 EXAMPLES = r'''
@@ -101,28 +104,17 @@ from ansible_collections.cisco.ucs.plugins.module_utils.ucs import UCSModule, uc
 def main():
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
-        name=dict(type='str'),
+        name=dict(type='str', required=True),
         vsan_id=dict(type='str'),
         vlan_id=dict(type='str'),
         fc_zoning=dict(type='str', default='disabled', choices=['disabled', 'enabled']),
         fabric=dict(type='str', default='common', choices=['common', 'A', 'B']),
         state=dict(type='str', default='present', choices=['present', 'absent']),
-        vsan_list=dict(type='list'),
     )
-
-    # Note that use of vsan_list is an experimental feature which allows multiple resource updates with a single UCSM connection.
-    # Support for vsan_list may change or be removed once persistent UCS connections are supported.
-    # Either vsan_list or name/vsan_id/vlan_id is required (user can specify either a list or single resource).
 
     module = AnsibleModule(
         argument_spec,
         supports_check_mode=True,
-        required_one_of=[
-            ['vsan_list', 'name']
-        ],
-        mutually_exclusive=[
-            ['vsan_list', 'name']
-        ],
     )
     ucs = UCSModule(module)
 
@@ -132,15 +124,8 @@ def main():
 
     changed = False
     try:
-        # Only documented use is a single resource, but to also support experimental
-        # feature allowing multiple updates all params are converted to a vsan_list below.
-
-        if module.params['vsan_list']:
-            # directly use the list (single resource and list are mutually exclusive
-            vsan_list = module.params['vsan_list']
-        else:
-            # single resource specified, create list from the current params
-            vsan_list = [module.params]
+        # single resource specified, create list from the current params
+        vsan_list = [module.params]
         for vsan in vsan_list:
             mo_exists = False
             props_match = False

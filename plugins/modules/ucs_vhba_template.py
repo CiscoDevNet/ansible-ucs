@@ -24,6 +24,7 @@ options:
     - If C(absent), will verify vHBA templates are absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the virtual HBA template.
@@ -31,6 +32,7 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the template is created.
     required: yes
+    type: str
   description:
     description:
     - A user-defined description of the template.
@@ -38,12 +40,14 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   fabric:
     description:
     - The Fabric ID field.
     - The name of the fabric interconnect that vHBAs created with this template are associated with.
     choices: [A, B]
     default: A
+    type: str
   redundancy_type:
     description:
     - The Redundancy Type used for template pairing from the Primary or Secondary redundancy template.
@@ -53,10 +57,12 @@ options:
     - "none - Legacy vHBA template behavior. Select this option if you do not want to use redundancy."
     choices: [none, primary, secondary]
     default: none
+    type: str
   vsan:
     description:
     - The VSAN to associate with vHBAs created from this template.
     default: default
+    type: str
   template_type:
     description:
     - The Template Type field.
@@ -65,37 +71,43 @@ options:
     - "updating-template - vHBAs created from this template are updated if the template changes."
     choices: [initial-template, updating-template]
     default: initial-template
+    type: str
   max_data:
     description:
     - The Max Data Field Size field.
     - The maximum size of the Fibre Channel frame payload bytes that the vHBA supports.
     - Enter an string between '256' and '2112'.
     default: '2048'
+    type: str
   wwpn_pool:
     description:
     - The WWPN pool that a vHBA created from this template uses to derive its WWPN address.
     default: default
+    type: str
   qos_policy:
     description:
     - The QoS policy that is associated with vHBAs created from this template.
+    type: str
   pin_group:
     description:
     - The SAN pin group that is associated with vHBAs created from this template.
+    type: str
   stats_policy:
     description:
     - The statistics collection policy that is associated with vHBAs created from this template.
     default: default
+    type: str
   org_dn:
     description:
     - Org dn (distinguished name)
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.5'
 '''
 
 EXAMPLES = r'''
@@ -130,8 +142,8 @@ def main():
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
-        name=dict(type='str'),
-        descr=dict(type='str'),
+        name=dict(type='str', required=True),
+        description=dict(type='str', aliases=['descr']),
         fabric=dict(type='str', default='A', choices=['A', 'B']),
         redundancy_type=dict(type='str', default='none', choices=['none', 'primary', 'secondary']),
         vsan=dict(type='str', default='default'),
@@ -142,22 +154,11 @@ def main():
         pin_group=dict(type='str'),
         stats_policy=dict(type='str', default='default'),
         state=dict(type='str', default='present', choices=['present', 'absent']),
-        vhba_template_list=dict(type='list'),
     )
-
-    # Note that use of vhba_template_list is an experimental feature which allows multiple resource updates with a single UCSM connection.
-    # Support for vhba_template_list may change or be removed once persistent UCS connections are supported.
-    # Either vhba_template_list or name is required (user can specify either a list of single resource).
 
     module = AnsibleModule(
         argument_spec,
         supports_check_mode=True,
-        required_one_of=[
-            ['vhba_template_list', 'name']
-        ],
-        mutually_exclusive=[
-            ['vhba_template_list', 'name']
-        ],
     )
     ucs = UCSModule(module)
 
@@ -168,15 +169,7 @@ def main():
 
     changed = False
     try:
-        # Only documented use is a single resource, but to also support experimental
-        # feature allowing multiple updates all params are converted to a vhba_template_list below.
-
-        if module.params['vhba_template_list']:
-            # directly use the list (single resource and list are mutually exclusive
-            vhba_template_list = module.params['vhba_template_list']
-        else:
-            # single resource specified, create list from the current params
-            vhba_template_list = [module.params]
+        vhba_template_list = [module.params]
         for vhba_template in vhba_template_list:
             mo_exists = False
             props_match = False

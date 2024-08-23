@@ -24,6 +24,7 @@ options:
     - If C(absent), will verify UUID pool is absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the UUID pool.
@@ -31,6 +32,7 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the UUID pool is created.
     required: yes
+    type: str
   description:
     description:
     - "The user-defined description of the UUID pool."
@@ -38,12 +40,14 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   prefix:
     description:
     - UUID prefix used for the range of server UUIDs.
     - "If no value is provided, the system derived prefix will be used (equivalent to selecting 'derived' option in UI)."
     - "If the user provides a value, the user provided prefix will be used (equivalent to selecting 'other' option in UI)."
     - A user provided value should be in the format XXXXXXXX-XXXX-XXXX.
+    type: str
   order:
     description:
     - The Assignment Order field.
@@ -52,24 +56,27 @@ options:
     - "sequential - Cisco UCS Manager selects the lowest available identity from the pool."
     choices: [default, sequential]
     default: default
+    type: str
   first_uuid:
     description:
     - The first UUID in the block of UUIDs.
     - This is the From field in the UCS Manager UUID Blocks menu.
+    type: str
   last_uuid:
     description:
     - The last UUID in the block of UUIDs.
     - This is the To field in the UCS Manager Add UUID Blocks menu.
+    type: str
   org_dn:
     description:
     - The distinguished name (dn) of the organization where the resource is assigned.
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.7'
 '''
 
 EXAMPLES = r'''
@@ -105,9 +112,9 @@ def main():
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),
-        description=dict(type='str', aliases=['descr'], default=''),
+        description=dict(type='str', aliases=['descr']),
         order=dict(type='str', default='default', choices=['default', 'sequential']),
-        prefix=dict(type='str', default=''),
+        prefix=dict(type='str'),
         first_uuid=dict(type='str'),
         last_uuid=dict(type='str'),
         state=dict(default='present', choices=['present', 'absent'], type='str'),

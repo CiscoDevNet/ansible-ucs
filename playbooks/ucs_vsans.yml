@@ -24,9 +24,11 @@
         fabric: common
         vsan_id: '110'
         vlan_id: '110'
+      delegate_to: localhost
     
     - name: Remove VSAN
       cisco.ucs.ucs_vsans:
         <<: *login_info
         name: vsan110
         state: absent
+      delegate_to: localhost

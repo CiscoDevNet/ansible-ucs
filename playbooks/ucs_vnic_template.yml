@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure vNIC template
       cisco.ucs.ucs_vnic_template:
@@ -37,6 +37,7 @@
           native: 'yes'
         - name: vlan200
           native: 'no'
+      delegate_to: localhost
 
     - name: Remove VLAN from template
       cisco.ucs.ucs_vnic_template:
@@ -47,6 +48,7 @@
         vlans_list:
         - name: vlan200
           state: absent
+      delegate_to: localhost
 
     - name: Configure vNIC template for failover
       cisco.ucs.ucs_vnic_template:
@@ -60,6 +62,7 @@
           native: 'yes'
         - name: vlan200
           native: 'no'
+      delegate_to: localhost
 
     - name: Configure vNIC template for failover
       cisco.ucs.ucs_vnic_template:
@@ -73,6 +76,7 @@
           native: 'yes'
         - name: vlan200
           native: 'no'
+      delegate_to: localhost
 
 
     - name: Remove vNIC template
@@ -80,19 +84,21 @@
         <<: *login_info
         name: vNIC-A-B
         org_dn: org-root/org-level1
-#        state: absent
+        state: absent
+      delegate_to: localhost
 
     - name: Remove vNIC template
       cisco.ucs.ucs_vnic_template:
         <<: *login_info
         name: vNIC-B-A
         org_dn: org-root/org-level1
-#        state: absent
+        state: absent
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
         <<: *login_info
         org_name: level1
         parent_org_path: root
-#        state: absent
-        delegate_to: localhost
+        state: absent
+      delegate_to: localhost

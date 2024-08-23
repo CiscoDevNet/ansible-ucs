@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure UUID address pool
       cisco.ucs.ucs_uuid_pool:
@@ -34,6 +34,7 @@
         order: sequential
         first_uuid: 0000-000000000001
         last_uuid: 0000-000000000078
+      delegate_to: localhost
     
     - name: Remove UUID address pool
       cisco.ucs.ucs_uuid_pool:
@@ -41,6 +42,7 @@
         name: UUID-Pool
         org_dn: org-root/org-level1
         state: absent
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -48,4 +50,4 @@
         org_name: level1
         parent_org_path: root
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost

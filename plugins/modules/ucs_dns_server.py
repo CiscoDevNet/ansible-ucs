@@ -56,8 +56,6 @@ author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-
-version_added: "2.8"
 '''
 
 EXAMPLES = r'''
@@ -93,7 +91,7 @@ def run_module():
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         dns_server=dict(type='str', aliases=['name']),
-        description=dict(type='str', aliases=['descr'], default=''),
+        description=dict(type='str', aliases=['descr']),
         state=dict(type='str', default='present', choices=['present', 'absent']),
         delegate_to=dict(type='str', default='localhost'),
     )

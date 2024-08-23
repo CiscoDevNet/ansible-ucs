@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure vHBA template
       cisco.ucs.ucs_vhba_template:
@@ -34,6 +34,7 @@
         fabric: A
         vsan: VSAN-A
         wwpn_pool: WWPN-Pool-A
+      delegate_to: localhost
     
     - name: Remote vHBA template
       cisco.ucs.ucs_vhba_template:
@@ -41,6 +42,7 @@
         name: vHBA-A
         org_dn: org-root/org-level1
         state: absent
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -48,4 +50,4 @@
         org_name: level1
         parent_org_path: root
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost

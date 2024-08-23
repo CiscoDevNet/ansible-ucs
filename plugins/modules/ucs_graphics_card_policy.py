@@ -68,7 +68,6 @@ requirements:
 
 author:
 - John McDonough (@movinalot)
-version_added: "2.9"
 '''
 
 EXAMPLES = r'''
@@ -155,7 +154,6 @@ def main():
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(required=True, type='str'),
-        descr=dict(type='str'),
         description=dict(type='str', aliases=['descr']),
         graphics_card_mode=dict(type='str', choices=[
             'any-configuration',

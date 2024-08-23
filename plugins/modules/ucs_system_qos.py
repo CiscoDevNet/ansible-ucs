@@ -14,7 +14,6 @@ DOCUMENTATION = r'''
 ---
 module: ucs_system_qos
 short_description: Configures system QoS settings
-version_added: 2.10
 description:
    -  Configures system QoS settings
 extends_documentation_fragment: cisco.ucs.ucs
@@ -23,29 +22,34 @@ options:
         description: Priority to configure
         choices: ["best-effort", "bronze", "fc", "gold","platinum", "silver"]
         required: true
+        type: str
     admin_state:
         description: Admin state of QoS Policy
         choices: ['disabled', 'enabled']
         default: enabled
+        type: str
     cos:
-        description: CoS setting
-        choices: ['any', '0-6']
+        description: CoS setting. Choices are any or 0-6.
         required: true
+        type: str
     weight:
-        description: CoS profile weight
-        choices: ['best-effort', 'none', '0-10']
+        description: CoS profile weight. Choices are best-effort, none or 0-10.
         required: true
+        type: str
     mtu:
-        description: MTU size
-        choices: ['fc', 'normal', '0-4294967295']
+        description: MTU size. Choices are fc, normal or 0-4294967295.
         default: normal
+        type: str
     multicast_optimize:
         description: Set multicast optimization options
         choices: ['false', 'no', 'true', 'yes']
+        default: 'no'
+        type: str
     drop:
         description: Set multicast optimization options
         default: 'drop'
         choices: ['drop', 'no-drop']
+        type: str
 requirements: ['ucsmsdk']
 author: "Brett Johnson (@sdbrett)"
 '''

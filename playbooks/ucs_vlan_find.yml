@@ -23,6 +23,7 @@
         fabric: 'common'
         pattern: '.'
       register: response
+      delegate_to: localhost
 
     - name: show response
       debug:
@@ -33,6 +34,7 @@
         <<: *login_info
         vlanid: '200'
       register: response
+      delegate_to: localhost
 
     - name: show response
       debug:

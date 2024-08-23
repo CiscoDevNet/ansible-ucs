@@ -23,9 +23,11 @@
         name: vlan300
         id: '300'
         native: 'no'
+      delegate_to: localhost
     
     - name: Remove VLAN
       cisco.ucs.ucs_vlans:
         <<: *login_info
         name: vlan300
         state: absent
+      delegate_to: localhost

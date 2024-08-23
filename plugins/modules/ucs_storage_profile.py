@@ -24,6 +24,7 @@ options:
     - If C(absent), will verify that the storage profile is absent and will delete if needed.
     choices: [ absent, present ]
     default: present
+    type: str
   name:
     description:
     - The name of the storage profile.
@@ -31,6 +32,7 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after profile is created.
     required: yes
+    type: str
   description:
     description:
     - The user-defined description of the storage profile.
@@ -38,48 +40,59 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   local_luns:
     description:
     - List of Local LUNs used by the storage profile.
+    type: list
+    elements: dict
     suboptions:
       name:
         description:
         - The name of the local LUN.
         required: yes
+        type: str
       size:
         description:
         - Size of this LUN in GB.
         - The size can range from 1 to 10240 GB.
         default: '1'
+        type: str
       auto_deploy:
         description:
         - Whether the local LUN should be automatically deployed or not.
         choices: [ auto-deploy, no-auto-deploy ]
         default: auto-deploy
+        type: str
       expand_to_avail:
         description:
         - Specifies that this LUN can be expanded to use the entire available disk group.
         - For each service profile, only one LUN can use this option.
         - Expand To Available option is not supported for already deployed LUN.
-        type: bool
+        choices: ['no', 'yes']
         default: 'no'
+        type: str
       fractional_size:
         description:
         - Fractional size of this LUN in MB.
         default: '0'
+        type: str
       disk_policy_name:
         description:
         - The disk group configuration policy to be applied to this local LUN.
+        type: str
       state:
         description:
         - If C(present), will verify local LUN is present on profile.
           If C(absent), will verify local LUN is absent on profile.
         choices: [ absent, present ]
         default: present
+        type: str
   org_dn:
     description:
     - The distinguished name (dn) of the organization where the resource is assigned.
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
@@ -87,7 +100,6 @@ author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.7'
 '''
 
 EXAMPLES = r'''
@@ -140,13 +152,13 @@ def main():
         auto_deploy=dict(type='str', default='auto-deploy', choices=['auto-deploy', 'no-auto-deploy']),
         expand_to_avail=dict(type='str', default='no', choices=['no', 'yes']),
         fractional_size=dict(type='str', default='0'),
-        disk_policy_name=dict(type='str', default=''),
+        disk_policy_name=dict(type='str'),
     )
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),
-        description=dict(type='str', aliases=['descr'], default=''),
+        description=dict(type='str', aliases=['descr']),
         local_luns=dict(type='list', elements='dict', options=local_lun),
         state=dict(type='str', default='present', choices=['present', 'absent']),
     )
