@@ -38,7 +38,6 @@ options:
     - Specify whether this is a node (WWNN) or port (WWPN) pool.
     - Optional if state is absent.
     choices: [node, port]
-    required: yes
     type: str
   description:
     description:
@@ -81,7 +80,6 @@ author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.5'
 '''
 
 EXAMPLES = r'''
@@ -131,29 +129,18 @@ def main():
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
-        name=dict(type='str'),
+        name=dict(type='str', required=True),
         purpose=dict(type='str', choices=['node', 'port']),
-        descr=dict(type='str'),
+        description=dict(type='str', aliases=['descr']),
         order=dict(type='str', default='default', choices=['default', 'sequential']),
         first_addr=dict(type='str'),
         last_addr=dict(type='str'),
         state=dict(type='str', default='present', choices=['present', 'absent']),
-        wwn_list=dict(type='list'),
     )
-
-    # Note that use of wwn_list is an experimental feature which allows multiple resource updates with a single UCSM connection.
-    # Support for wwn_list may change or be removed once persistent UCS connections are supported.
-    # Either wwn_list or name is required (user can specify either a list or single resource).
 
     module = AnsibleModule(
         argument_spec,
         supports_check_mode=True,
-        required_one_of=[
-            ['wwn_list', 'name']
-        ],
-        mutually_exclusive=[
-            ['wwn_list', 'name']
-        ],
     )
     ucs = UCSModule(module)
 
@@ -164,15 +151,8 @@ def main():
 
     changed = False
     try:
-        # Only documented use is a single resource, but to also support experimental
-        # feature allowing multiple updates all params are converted to a wwn_list below.
-
-        if module.params['wwn_list']:
-            # directly use the list (single resource and list are mutually exclusive
-            wwn_list = module.params['wwn_list']
-        else:
-            # single resource specified, create list from the current params
-            wwn_list = [module.params]
+        # single resource specified, create list from the current params
+        wwn_list = [module.params]
         for wwn in wwn_list:
             mo_exists = False
             props_match = False

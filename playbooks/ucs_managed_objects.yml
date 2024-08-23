@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure Network Control Policy
       cisco.ucs.ucs_managed_objects:
@@ -39,6 +39,7 @@
             lldp_receive: enabled
             lldp_transmit: enabled
             name: Enable-CDP-LLDP
+      delegate_to: localhost
       
     - name: Remove Network Control Policy
       cisco.ucs.ucs_managed_objects:
@@ -50,6 +51,7 @@
             parent_mo_or_dn: org-root/org-level1
             name: Enable-CDP-LLDP
         state: absent
+      delegate_to: localhost
       
     - name: Configure Boot Policy Using JSON objects list with children
       cisco.ucs.ucs_managed_objects:
@@ -100,6 +102,7 @@
                   }
               ]
           }
+      delegate_to: localhost
       
     - name: Remove Boot Policy Using JSON objects list
       cisco.ucs.ucs_managed_objects:
@@ -114,6 +117,7 @@
               }
           }
         state: absent
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -121,4 +125,4 @@
         org_name: level1
         parent_org_path: root
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost

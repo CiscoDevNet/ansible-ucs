@@ -24,13 +24,15 @@ options:
     - If C(absent), will verify MAC pool is absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the MAC pool.
     - This name can be between 1 and 32 alphanumeric characters.
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the MAC pool is created.
-    required: yes
+    required: true
+    type: str
   description:
     description:
     - A description of the MAC pool.
@@ -38,6 +40,7 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   order:
     description:
     - The Assignment Order field.
@@ -46,24 +49,27 @@ options:
     - "sequential - Cisco UCS Manager selects the lowest available identity from the pool."
     choices: [default, sequential]
     default: default
+    type: str
   first_addr:
     description:
     - The first MAC address in the block of addresses.
     - This is the From field in the UCS Manager MAC Blocks menu.
+    type: str
   last_addr:
     description:
     - The last MAC address in the block of addresses.
     - This is the To field in the UCS Manager Add MAC Blocks menu.
+    type: str
   org_dn:
     description:
     - The distinguished name (dn) of the organization where the resource is assigned.
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.5'
 '''
 
 EXAMPLES = r'''
@@ -99,7 +105,7 @@ def main():
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),
-        descr=dict(type='str', default='', aliases=['description']),
+        description=dict(type='str', aliases=['descr']),
         order=dict(type='str', default='default', choices=['default', 'sequential']),
         first_addr=dict(type='str'),
         last_addr=dict(type='str'),

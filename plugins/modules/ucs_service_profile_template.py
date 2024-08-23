@@ -24,6 +24,7 @@ options:
     - If C(absent), will verify Service Profile Templates are absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the service profile template.
@@ -31,6 +32,7 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - This name must be unique across all service profiles and service profile templates within the same organization.
     required: yes
+    type: str
   template_type:
     description:
     - "The template type field which can be one of the following:"
@@ -38,6 +40,7 @@ options:
     - "updating-template — Any service profiles created from this template are updated if the template changes."
     choices: [initial-template, updating-template]
     default: initial-template
+    type: str
   uuid_pool:
     description:
     - Specifies how the UUID will be set on a server associated with a service profile created from this template.
@@ -47,6 +50,7 @@ options:
     - the UUID is set to the UUID value assigned to the server by the manufacturer. If the service profile is later moved to
     - a different server, the UUID is changed to match the new server."
     default: default
+    type: str
   description:
     description:
     - A user-defined description of the service profile template.
@@ -54,106 +58,134 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   storage_profile:
     description:
     - The name of the storage profile you want to associate with service profiles created from this template
+    type: str
   local_disk_policy:
     description:
     - The name of the local disk policy you want to associate with service profiles created from this template.
+    type: str
   lan_connectivity_policy:
     description:
     - The name of the LAN connectivity policy you want to associate with service profiles created from this template.
+    type: str
   iqn_pool:
     description:
     - The name of the IQN pool (initiator) you want to apply to all iSCSI vNICs for service profiles created from this template.
+    type: str
   san_connectivity_policy:
     description:
     - The name of the SAN connectivity policy you want to associate with service profiles created from this template.
+    type: str
   vmedia_policy:
     description:
     - The name of the vMedia policy you want to associate with service profiles created from this template.
+    type: str
   boot_policy:
     description:
     - The name of the boot order policy you want to associate with service profiles created from this template.
     default: default
+    type: str
   maintenance_policy:
     description:
     - The name of the maintenance policy you want to associate with service profiles created from this template.
+    type: str
   server_pool:
     description:
     - The name of the server pool you want to associate with this service profile template.
+    type: str
   server_pool_qualification:
     description:
     - The name of the server pool policy qualificaiton you want to use for this service profile template.
+    type: str
   power_state:
     description:
     - The power state to be applied when a service profile created from this template is associated with a server.
     choices: [up, down]
     default: up
+    type: str
   host_firmware_package:
     description:
     - The name of the host firmware package you want to associate with service profiles created from this template.
+    type: str
   bios_policy:
     description:
     - The name of the BIOS policy you want to associate with service profiles created from this template.
+    type: str
   ipmi_access_profile:
     description:
     - The name of the IPMI access profile you want to associate with service profiles created from this template.
+    type: str
   sol_policy:
     description:
     - The name of the Serial over LAN (SoL) policy you want to associate with service profiles created from this template.
+    type: str
   mgmt_ip_state:
     description:
     - The state for the Outband Management IP pool you want to use with service profiles created from this template.
-    choices: [none, pooled]
+    - Choices are none or pooled.
     default: pooled
+    type: str
   mgmt_ip_pool:
     description:
     - The name of the Outband Management IP pool you want to use with service profiles created from this template.
     default: ext-mgmt
+    type: str
   power_control_policy:
     description:
     - The name of the power control policy you want to associate with service profiles created from this template.
     default: default
+    type: str
   power_sync_policy:
     description:
     - The name of the power sync policy you want to associate with service profiles created from this template.
+    type: str
   scrub_policy:
     description:
     - The name of the scrub policy you want to associate with service profiles created from this template.
+    type: str
   kvm_mgmt_policy:
     description:
     - The name of the KVM management policy you want to associate with service profiles created from this template.
+    type: str
   graphics_card_policy:
     description:
     - The name of the graphics card policy you want to associate with service profiles created from this template.
+    type: str
   threshold_policy:
     description:
     - The name of the threshold policy you want to associate with service profiles created from this template.
     default: default
+    type: str
   user_label:
     description:
     - The User Label you want to assign to service profiles created from this template.
+    type: str
   mgmt_interface_mode:
     description:
     - The Management Interface you want to assign to service profiles created from this template.
     choices: ['', in-band]
+    type: str
   mgmt_vnet_name:
     description:
     - A VLAN selected from the associated VLAN group.
+    type: str
   mgmt_inband_pool_name:
     description:
     - How the inband management IPv4 address is derived for the server associated with this service profile.
+    type: str
   org_dn:
     description:
     - Org dn (distinguished name)
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.8'
 '''
 
 EXAMPLES = r'''
@@ -456,36 +488,36 @@ def main():
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),
-        bios_policy=dict(type='str', default=''),
+        bios_policy=dict(type='str'),
         boot_policy=dict(type='str', default='default'),
-        description=dict(type='str', aliases=['descr'], default=''),
+        description=dict(type='str', aliases=['descr']),
         mgmt_ip_state=dict(type='str', default='pooled'),
         mgmt_ip_pool=dict(type='str', default='ext-mgmt'),
-        graphics_card_policy=dict(type='str', default=''),
-        host_firmware_package=dict(type='str', default=''),
+        graphics_card_policy=dict(type='str'),
+        host_firmware_package=dict(type='str'),
         uuid_pool=dict(type='str', default='default'),
-        kvm_mgmt_policy=dict(type='str', default=''),
-        local_disk_policy=dict(type='str', default=''),
-        maintenance_policy=dict(type='str', default=''),
-        ipmi_access_profile=dict(type='str', default=''),
+        kvm_mgmt_policy=dict(type='str'),
+        local_disk_policy=dict(type='str'),
+        maintenance_policy=dict(type='str'),
+        ipmi_access_profile=dict(type='str'),
         power_control_policy=dict(type='str', default='default'),
-        power_sync_policy=dict(type='str', default=''),
-        scrub_policy=dict(type='str', default=''),
-        sol_policy=dict(type='str', default=''),
+        power_sync_policy=dict(type='str'),
+        scrub_policy=dict(type='str'),
+        sol_policy=dict(type='str'),
         threshold_policy=dict(type='str', default='default'),
         template_type=dict(type='str', default='initial-template', choices=['initial-template', 'updating-template']),
-        user_label=dict(type='str', default=''),
-        vmedia_policy=dict(type='str', default=''),
-        storage_profile=dict(type='str', default=''),
-        lan_connectivity_policy=dict(type='str', default=''),
-        iqn_pool=dict(type='str', default=''),
-        san_connectivity_policy=dict(type='str', default=''),
-        server_pool=dict(type='str', default=''),
-        server_pool_qualification=dict(type='str', default=''),
+        user_label=dict(type='str'),
+        vmedia_policy=dict(type='str'),
+        storage_profile=dict(type='str'),
+        lan_connectivity_policy=dict(type='str'),
+        iqn_pool=dict(type='str'),
+        san_connectivity_policy=dict(type='str'),
+        server_pool=dict(type='str'),
+        server_pool_qualification=dict(type='str'),
         power_state=dict(type='str', default='up', choices=['up', 'down']),
-        mgmt_interface_mode=dict(type='str', default='', choices=['', 'in-band']),
-        mgmt_vnet_name=dict(type='str', default=''),
-        mgmt_inband_pool_name=dict(type='str', default=''),
+        mgmt_interface_mode=dict(type='str', choices=['', 'in-band']),
+        mgmt_vnet_name=dict(type='str'),
+        mgmt_inband_pool_name=dict(type='str'),
         state=dict(type='str', default='present', choices=['present', 'absent']),
     )
 

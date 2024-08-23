@@ -23,9 +23,11 @@
         state: present
         admin_state: enabled
         timezone: America/Phoenix
+      delegate_to: localhost
 
     - name: Unconfigure Time Zone
       cisco.ucs.ucs_timezone:
         <<: *login_info
         state: absent
         admin_state: disabled
+      delegate_to: localhost

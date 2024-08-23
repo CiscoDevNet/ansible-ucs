@@ -25,6 +25,7 @@ options:
     - If C(absent), will verify IP pool is absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the IP address pool.
@@ -32,6 +33,7 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the IP address pool is created.
     required: yes
+    type: str
   description:
     description:
     - The user-defined description of the IP address pool.
@@ -39,6 +41,7 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   order:
     description:
     - The Assignment Order field.
@@ -47,66 +50,98 @@ options:
     - "sequential - Cisco UCS Manager selects the lowest available identity from the pool."
     choices: [default, sequential]
     default: default
-  ip_blocks:
+    type: str
+  ipv4_blocks:
     description:
     - List of IPv4 blocks used by the IP Pool.
+    type: list
+    elements: dict
     suboptions:
       first_addr:
         description:
         - The first IPv4 address in the IPv4 addresses block.
         - This is the From field in the UCS Manager Add IPv4 Blocks menu.
+        type: str
       last_addr:
         description:
         - The last IPv4 address in the IPv4 addresses block.
         - This is the To field in the UCS Manager Add IPv4 Blocks menu.
+        type: str
       subnet_mask:
         description:
         - The subnet mask associated with the IPv4 addresses in the block.
         default: 255.255.255.0
+        type: str
       default_gw:
         description:
         - The default gateway associated with the IPv4 addresses in the block.
         default: 0.0.0.0
+        type: str
       primary_dns:
         description:
         - The primary DNS server that this block of IPv4 addresses should access.
         default: 0.0.0.0
+        type: str
       secondary_dns:
         description:
         - The secondary DNS server that this block of IPv4 addresses should access.
         default: 0.0.0.0
+        type: str
+      state:
+        description:
+        - If C(present), will verify IP block is present and will create if needed.
+        - If C(absent), will verify IP block is absent and will delete if needed.
+        choices: [present, absent]
+        default: present
+        type: str
   ipv6_blocks:
     description:
     - List of IPv6 blocks used by the IP Pool.
+    type: list
+    elements: dict
     suboptions:
       ipv6_first_addr:
         description:
         - The first IPv6 address in the IPv6 addresses block.
         - This is the From field in the UCS Manager Add IPv6 Blocks menu.
+        type: str
       ipv6_last_addr:
         description:
         - The last IPv6 address in the IPv6 addresses block.
         - This is the To field in the UCS Manager Add IPv6 Blocks menu.
+        type: str
       ipv6_prefix:
         description:
         - The network address prefix associated with the IPv6 addresses in the block.
         default: '64'
+        type: str
       ipv6_default_gw:
         description:
         - The default gateway associated with the IPv6 addresses in the block.
         default: '::'
+        type: str
       ipv6_primary_dns:
         description:
         - The primary DNS server that this block of IPv6 addresses should access.
         default: '::'
+        type: str
       ipv6_secondary_dns:
         description:
         - The secondary DNS server that this block of IPv6 addresses should access.
         default: '::'
+        type: str
+      state:
+        description:
+        - If C(present), will verify IP block is present and will create if needed.
+        - If C(absent), will verify IP block is absent and will delete if needed.
+        choices: [present, absent]
+        default: present
+        type: str
   org_dn:
     description:
     - Org dn (distinguished name)
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
@@ -114,7 +149,6 @@ author:
   - David Soper (@dsoper2)
   - John McDonough (@movinalot)
   - CiscoUcs (@CiscoUcs)
-version_added: '2.5'
 '''
 
 EXAMPLES = r'''
@@ -304,20 +338,8 @@ def main():
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),
-        descr=dict(type='str', default='', aliases=['description']),
+        descr=dict(type='str', aliases=['description']),
         order=dict(type='str', default='default', choices=['default', 'sequential']),
-        first_addr=dict(type='str'),
-        last_addr=dict(type='str'),
-        subnet_mask=dict(type='str', default='255.255.255.0'),
-        default_gw=dict(type='str', default='0.0.0.0'),
-        primary_dns=dict(type='str', default='0.0.0.0'),
-        secondary_dns=dict(type='str', default='0.0.0.0'),
-        ipv6_first_addr=dict(type='str'),
-        ipv6_last_addr=dict(type='str'),
-        ipv6_prefix=dict(type='str', default='64'),
-        ipv6_default_gw=dict(type='str', default='::'),
-        ipv6_primary_dns=dict(type='str', default='::'),
-        ipv6_secondary_dns=dict(type='str', default='::'),
         state=dict(type='str', default='present', choices=['present', 'absent']),
         ipv4_blocks=dict(type='list', default=None, elements='dict', options=ipv4_configuration_spec),
         ipv6_blocks=dict(type='list', default=None, elements='dict', options=ipv6_configuration_spec),

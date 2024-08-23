@@ -24,39 +24,45 @@ options:
     - If C(absent), will verify Service Profiles are absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the service profile.
     - This name can be between 2 and 32 alphanumeric characters.
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - This name must be unique across all service profiles and service profile templates within the same organization.
-    required: yes
+    required: true
+    type: str
   source_template:
     description:
     - The name of the service profile template used to create this serivce profile.
-    required: yes
+    required: true
+    type: str
   power_state:
     description:
     - The power state to be applied when this service profile is associated with a server.
     - If no value is provided, the power_state for the service profile will not be modified.
     choices: [up, down]
+    type: str
   user_label:
     description:
     - The User Label you want to assign to this service profile.
+    type: str
   org_dn:
     description:
     - Org dn (distinguished name)
     default: org-root
+    type: str
   description:
     description:
     - Optional
     - The Description of the service profile
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.5'
 '''
 
 EXAMPLES = r'''
@@ -92,10 +98,10 @@ def main():
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),
         source_template=dict(type='str', required=True),
-        user_label=dict(type='str', default=''),
+        user_label=dict(type='str'),
         power_state=dict(type='str', choices=['up', 'down']),
         state=dict(type='str', default='present', choices=['present', 'absent']),
-        description=dict(type='str', default=''),
+        description=dict(type='str'),
     )
 
     module = AnsibleModule(

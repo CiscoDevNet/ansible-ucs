@@ -17,36 +17,45 @@ module: ucs_sp_vnic_order
 
 short_description: Configures vNIC order for service profiles and templates on Cisco UCS Manager
 
-version_added: 2.10
-
 description:
     - Configures Configures vNIC order for service profiles and templates on Cisco UCS Manager
 
 options:
     sp_name:
         description: DN of the service profile
+        required: true
+        type: str
     vnics:
         description: List of vNIC order properties
+        type: list
+        elements: dict
+        required: true
         suboptions:
             name:
                 description: Name of the vNIC
                 required: true
+                type: str
             admin_vcon:
                 description: Name of the virtual connection
                 choices: ["1","2","3","4","any"]
+                type: str
             order:
-                description: vNIC connection order
-                choices: ["unspecified", "0-256"]
+                description: vNIC connection order. Choices are 0-256 or unspecified.
+                type: str
             transport:
                 description: transport medium
                 choices: ["ethernet", "fc"]
                 required: true
+                type: str
             state:
                 description: Desired state of the vNIC.
                 choices: [present, absent]
                 default: present
+                type: str
     org_dn:
         description: root org dn
+        default: org-root
+        type: str
 extends_documentation_fragment:
     - cisco.ucs.ucs
 requirements:

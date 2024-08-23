@@ -21,7 +21,7 @@
       cisco.ucs.ucs_query:
         <<: *login_info
         class_ids: computeBlade
-        delegate_to: localhost
+      delegate_to: localhost
       register: response
 
     - name: show response
@@ -32,7 +32,7 @@
       cisco.ucs.ucs_query:
         <<: *login_info
         class_ids: computeBlade, fabricVlan
-        delegate_to: localhost
+      delegate_to: localhost
       register: response
 
     - name: show response
@@ -43,7 +43,7 @@
       cisco.ucs.ucs_query:
         <<: *login_info
         distinguished_names: org-root
-        delegate_to: localhost
+      delegate_to: localhost
       register: response
 
     - name: show response
@@ -54,7 +54,7 @@
       cisco.ucs.ucs_query:
         <<: *login_info
         distinguished_names: org-root, sys/rack-unit-1, sys/chassis-1/blade-2
-        delegate_to: localhost
+      delegate_to: localhost
       register: response
 
     - name: show response

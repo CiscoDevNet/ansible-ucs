@@ -24,6 +24,7 @@ options:
     - If C(absent), will verify VLANs are absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   vlanname:
     description:
     - The name assigned to the VLAN.
@@ -31,6 +32,7 @@ options:
     - This name can be between 1 and 32 alphanumeric characters.
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     required: yes
+    type: str
   vlangroup:
     description:
     - The name assigned to the VLAN Group.
@@ -38,11 +40,11 @@ options:
     - This name can be between 1 and 32 alphanumeric characters.
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     required: yes
+    type: str
 requirements:
 - ucsmsdk
 author:
-- Derrick Johnson @derricktj
-version_added: '2.10'
+- Derrick Johnson (@derricktj)
 '''
 
 EXAMPLES = r'''

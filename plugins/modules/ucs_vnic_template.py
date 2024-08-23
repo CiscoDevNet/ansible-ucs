@@ -24,6 +24,7 @@ options:
     - If C(absent), will verify vNIC templates are absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the vNIC template.
@@ -31,6 +32,7 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the template is created.
     required: yes
+    type: str
   description:
     description:
     - A user-defined description of the vNIC template.
@@ -38,6 +40,7 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   fabric:
     description:
     - The Fabric ID field specifying the fabric interconnect associated with vNICs created from this template.
@@ -49,6 +52,7 @@ options:
     - "- If you plan to associate one or more vNICs created from this template to a server with an adapter that does not support fabric failover."
     choices: [A, B, A-B, B-A]
     default: A
+    type: str
   redundancy_type:
     description:
     - The Redundancy Type used for vNIC redundancy pairs during fabric failover.
@@ -58,6 +62,7 @@ options:
     - "none - Legacy vNIC template behavior. Select this option if you do not want to use redundancy."
     choices: [none, primary, secondary]
     default: none
+    type: str
   peer_redundancy_template:
     description:
     - The Peer Redundancy Template.
@@ -66,6 +71,7 @@ options:
     - If the redundancy_type is secondary, the name of the primary template should be provided.
     - Secondary templates can only configure non-shared properties (name, description, and mac_pool).
     aliases: [ peer_redundancy_templ ]
+    type: str
   target:
     description:
     - The possible target for vNICs created from this template.
@@ -73,7 +79,9 @@ options:
     - "This can be one of the following:"
     - "adapter — The vNICs apply to all adapters. No VM-FEX port profile is created if you choose this option."
     - "vm - The vNICs apply to all virtual machines. A VM-FEX port profile is created if you choose this option."
+    choices: [adapter, vm]
     default: adapter
+    type: str
   template_type:
     description:
     - The Template Type field.
@@ -82,21 +90,30 @@ options:
     - "updating-template - vNICs created from this template are updated if the template changes."
     choices: [initial-template, updating-template]
     default: initial-template
+    type: str
   vlans_list:
     description:
     - List of VLANs used by the vNIC template.
-    - "Each list element has the following suboptions:"
-    - "= name"
-    - "  The name of the VLAN (required)."
-    - "- native"
-    - "  Designates the VLAN as a native VLAN.  Only one VLAN in the list can be a native VLAN."
-    - "  [choices: 'no', 'yes']"
-    - "  [Default: 'no']"
-    - "- state"
-    - "  If present, will verify VLAN is present on template."
-    - "  If absent, will verify VLAN is absent on template."
-    - "  choices: [present, absent]"
-    - "  default: present"
+    type: list
+    elements: dict
+    suboptions:
+      name:
+        description:
+          - The name of the VLAN (required if state is present).
+        type: str
+      native:
+        description:
+        - Designates the VLAN as a native VLAN.  Only one VLAN in the list can be a native VLAN.
+        choices: ['no', 'yes']
+        default: 'no'
+        type: str
+      state:
+        description:
+        - If present, will verify VLAN is present on template.
+        - If absent, will verify VLAN is absent on template.
+        choices: [present, absent]
+        default: present
+        type: str
   cdn_source:
     description:
     - CDN Source field.
@@ -105,9 +122,11 @@ options:
     - "user-defined - Uses a user-defined CDN name for the vNIC template. If this option is chosen, cdn_name must also be provided."
     choices: [vnic-name, user-defined]
     default: vnic-name
+    type: str
   cdn_name:
     description:
     - CDN Name used when cdn_source is set to user-defined.
+    type: str
   mtu:
     description:
     - The MTU field.
@@ -115,33 +134,38 @@ options:
     - Enter a string between '1500' and '9000'.
     - If the vNIC template has an associated QoS policy, the MTU specified here must be equal to or less than the MTU specified in the QoS system class.
     default: '1500'
+    type: str
   mac_pool:
     description:
     - The MAC address pool that vNICs created from this vNIC template should use.
+    type: str
   qos_policy:
     description:
     - The quality of service (QoS) policy that vNICs created from this vNIC template should use.
+    type: str
   network_control_policy:
     description:
     - The network control policy that vNICs created from this vNIC template should use.
+    type: str
   pin_group:
     description:
     - The LAN pin group that vNICs created from this vNIC template should use.
+    type: str
   stats_policy:
     description:
     - The statistics collection policy that vNICs created from this vNIC template should use.
-    default: default
+    type: str
   org_dn:
     description:
     - Org dn (distinguished name)
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.5'
 '''
 
 EXAMPLES = r'''
@@ -206,25 +230,30 @@ from ansible_collections.cisco.ucs.plugins.module_utils.ucs import UCSModule, uc
 
 
 def main():
+    vlans_list = dict(
+        name=dict(type='str'),
+        native=dict(type='str', default='no', choices=['no', 'yes']),
+        state=dict(type='str', default='present', choices=['present', 'absent']),
+    )
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),
-        description=dict(type='str', aliases=['descr'], default=''),
+        description=dict(type='str', aliases=['descr']),
         fabric=dict(type='str', default='A', choices=['A', 'B', 'A-B', 'B-A']),
         redundancy_type=dict(type='str', default='none', choices=['none', 'primary', 'secondary']),
-        peer_redundancy_template=dict(type='str', aliases=['peer_redundancy_templ'], default=''),
+        peer_redundancy_template=dict(type='str', aliases=['peer_redundancy_templ']),
         target=dict(type='str', default='adapter', choices=['adapter', 'vm']),
         template_type=dict(type='str', default='initial-template', choices=['initial-template', 'updating-template']),
-        vlans_list=dict(type='list'),
+        vlans_list=dict(type='list', elements='dict', options=vlans_list),
         cdn_source=dict(type='str', default='vnic-name', choices=['vnic-name', 'user-defined']),
-        cdn_name=dict(type='str', default=''),
+        cdn_name=dict(type='str'),
         mtu=dict(type='str', default='1500'),
-        mac_pool=dict(type='str', default=''),
-        qos_policy=dict(type='str', default=''),
-        network_control_policy=dict(type='str', default=''),
-        pin_group=dict(type='str', default=''),
-        stats_policy=dict(type='str', default='default'),
+        mac_pool=dict(type='str'),
+        qos_policy=dict(type='str'),
+        network_control_policy=dict(type='str'),
+        pin_group=dict(type='str'),
+        stats_policy=dict(type='str'),
         state=dict(type='str', default='present', choices=['present', 'absent']),
     )
 

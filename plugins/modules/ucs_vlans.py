@@ -24,6 +24,7 @@ options:
     - If C(absent), will verify VLANs are absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name assigned to the VLAN.
@@ -32,11 +33,12 @@ options:
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the VLAN is created.
     required: yes
+    type: str
   multicast_policy:
     description:
     - The multicast policy associated with this VLAN.
     - This option is only valid if the Sharing Type field is set to None or Primary.
-    default: ''
+    type: str
   fabric:
     description:
     - "The fabric configuration of the VLAN.  This can be one of the following:"
@@ -46,6 +48,7 @@ options:
     - For upstream disjoint L2 networks, Cisco recommends that you choose common to create VLANs that apply to both fabrics.
     choices: [common, A, B]
     default: common
+    type: str
   id:
     description:
     - The unique string identifier assigned to the VLAN.
@@ -54,7 +57,7 @@ options:
     - The VLAN IDs you specify must also be supported on the switch that you are using.
     - VLANs in the LAN cloud and FCoE VLANs in the SAN cloud must have different IDs.
     - Optional if state is absent.
-    required: yes
+    type: str
   sharing:
     description:
     - The Sharing Type field.
@@ -65,17 +68,18 @@ options:
     - "community - This VLAN can communicate with other ports on the same community VLAN as well as the promiscuous port. This VLAN is a Community VLAN."
     choices: [none, primary, isolated, community]
     default: none
+    type: str
   native:
     description:
     - Designates the VLAN as a native VLAN.
     choices: ['yes', 'no']
     default: 'no'
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.5'
 '''
 
 EXAMPLES = r'''
@@ -109,7 +113,7 @@ def main():
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         name=dict(type='str', required=True),
-        multicast_policy=dict(type='str', default=''),
+        multicast_policy=dict(type='str'),
         fabric=dict(type='str', default='common', choices=['common', 'A', 'B']),
         id=dict(type='str'),
         sharing=dict(type='str', default='none', choices=['none', 'primary', 'isolated', 'community']),

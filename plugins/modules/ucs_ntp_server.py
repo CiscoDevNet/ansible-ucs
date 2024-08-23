@@ -24,6 +24,7 @@ options:
     - If C(present), will add or update an NTP server.
     choices: [absent, present]
     default: present
+    type: str
 
   ntp_server:
     description:
@@ -31,7 +32,7 @@ options:
     - Enter up to 63 characters that form a valid hostname.
     - Enter a valid IPV4 Address.
     aliases: [ name ]
-    default: ""
+    type: str
 
   description:
     description:
@@ -40,7 +41,7 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
-    default: ""
+    type: str
 
 requirements:
 - ucsmsdk
@@ -48,7 +49,6 @@ author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: "2.7"
 '''
 
 EXAMPLES = r'''
@@ -99,7 +99,7 @@ def run_module():
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         ntp_server=dict(type='str', aliases=['name']),
-        description=dict(type='str', aliases=['descr'], default=''),
+        description=dict(type='str', aliases=['descr']),
         state=dict(type='str', default='present', choices=['present', 'absent']),
     )
 

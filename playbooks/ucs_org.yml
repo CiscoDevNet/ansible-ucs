@@ -23,7 +23,7 @@
         org_name: test
         description: testing org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Update UCS Organization
       cisco.ucs.ucs_org:
@@ -31,14 +31,14 @@
         org_name: test
         description: Testing org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
         <<: *login_info
         org_name: test
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Add UCS Organization
       cisco.ucs.ucs_org:
@@ -47,7 +47,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Add UCS Organization
       cisco.ucs.ucs_org:
@@ -56,6 +56,7 @@
         parent_org_path: root/level1
         description: level2 org
         state: present
+      delegate_to: localhost
 
     - name: Add UCS Organization
       cisco.ucs.ucs_org:
@@ -64,6 +65,7 @@
         parent_org_path: root/level1/level2
         description: level3 org
         state: present
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -71,3 +73,4 @@
         org_name: level2
         parent_org_path: root/level1
         state: absent
+      delegate_to: localhost

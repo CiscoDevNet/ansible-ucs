@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure WWNN pool
       cisco.ucs.ucs_wwn_pool:
@@ -34,6 +34,7 @@
         purpose: node
         first_addr: 20:00:00:25:B5:48:00:00
         last_addr: 20:00:00:25:B5:48:00:0F
+      delegate_to: localhost
 
     - name: Configure WWPN A pool
       cisco.ucs.ucs_wwn_pool:
@@ -44,6 +45,7 @@
         order: sequential
         first_addr: 20:00:00:25:B5:48:0A:00
         last_addr: 20:00:00:25:B5:48:0A:0F
+      delegate_to: localhost
 
     - name: Configure WWPN Bpool
       cisco.ucs.ucs_wwn_pool:
@@ -54,6 +56,7 @@
         order: sequential
         first_addr: 20:00:00:25:B5:48:0B:00
         last_addr: 20:00:00:25:B5:48:0B:0F
+      delegate_to: localhost
 
     - name: Remove WWNN pool
       cisco.ucs.ucs_wwn_pool:
@@ -61,6 +64,7 @@
         org_dn: org-root/org-level1
         name: WWNN-Pool
         state: absent
+      delegate_to: localhost
 
     - name: Remove WWPN pool
       cisco.ucs.ucs_wwn_pool:
@@ -68,6 +72,7 @@
         name: WWPN-Pool-A
         org_dn: org-root/org-level1
         state: absent
+      delegate_to: localhost
 
     - name: Remove WWPN pool
       cisco.ucs.ucs_wwn_pool:
@@ -75,6 +80,7 @@
         name: WWPN-Pool-B
         org_dn: org-root/org-level1
         state: absent
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -82,4 +88,4 @@
         org_name: level1
         parent_org_path: root
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost

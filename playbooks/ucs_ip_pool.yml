@@ -24,7 +24,7 @@
         parent_org_path: root
         description: level1 org
         state: present
-        delegate_to: localhost
+      delegate_to: localhost
 
     - name: Configure IPv4 and IPv6 address pool
       cisco.ucs.ucs_ip_pool:
@@ -47,6 +47,7 @@
         - ipv6_first_addr: fe80::1cae:7992:d7a1:ec07
           ipv6_last_addr: fe80::1cae:7992:d7a1:ecfe
           ipv6_default_gw: fe80::1cae:7992:d7a1:ecff
+      delegate_to: localhost
 
     - name: Remove IPv4 and IPv6 address pool blocks
       cisco.ucs.ucs_ip_pool:
@@ -61,6 +62,7 @@
         - ipv6_first_addr: fe80::1cae:7992:d7a1:ec07
           ipv6_last_addr: fe80::1cae:7992:d7a1:ecfe
           state: absent
+      delegate_to: localhost
 
     - name: Remove IPv4 and IPv6 address pool
       cisco.ucs.ucs_ip_pool:
@@ -68,6 +70,7 @@
         name: ip-pool-01
         org_dn: org-root/org-level1
         state: absent
+      delegate_to: localhost
 
     - name: Remove UCS Organization
       cisco.ucs.ucs_org:
@@ -75,4 +78,4 @@
         org_name: level1
         parent_org_path: root
         state: absent
-        delegate_to: localhost
+      delegate_to: localhost

@@ -24,6 +24,7 @@ options:
     - If C(present), will set or update timezone.
     choices: [absent, present]
     default: present
+    type: str
 
   admin_state:
     description:
@@ -32,6 +33,7 @@ options:
     - The disabled admin_state indicates the timezone configuration is ignored by UCS Manager.
     choices: [disabled, enabled]
     default: enabled
+    type: str
 
   description:
     description:
@@ -40,7 +42,7 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
-    default: ""
+    type: str
 
   timezone:
     description:
@@ -50,6 +52,7 @@ options:
     - The timezone name can be between 0 and 510 alphanumeric characters.
     - You cannot use spaces or any special characters other than
     - "\"-\" (hyphen), \"_\" (underscore), \"/\" (backslash)."
+    type: str
 
 requirements:
 - ucsmsdk
@@ -57,7 +60,6 @@ author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.7'
 '''
 
 EXAMPLES = r'''
@@ -92,7 +94,7 @@ def run_module():
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(
         timezone=dict(type='str'),
-        description=dict(type='str', aliases=['descr'], default=''),
+        description=dict(type='str', aliases=['descr']),
         admin_state=dict(type='str', default='enabled', choices=['disabled', 'enabled']),
         state=dict(type='str', default='present', choices=['present', 'absent']),
     )

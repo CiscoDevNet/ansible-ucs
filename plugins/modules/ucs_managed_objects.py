@@ -26,33 +26,41 @@ options:
     - If C(absent), will verify that the Managed Objects are absent and will delete if needed.
     choices: [ absent, present ]
     default: present
+    type: str
   objects:
     description:
     - List of managed objects to configure.  Each managed object has suboptions the specify the Python SDK module, class, and properties to configure.
+    type: list
+    elements: dict
     suboptions:
       module:
         description:
         - Name of the Python SDK module implementing the required class.
-        required: yes
+        required: true
+        type: str
       class_name:
         description:
         - Name of the Python class that will be used to configure the Managed Object.
-        required: yes
+        required: true
+        type: str
+        aliases: [class]
       properties:
         description:
         - List of properties to configure on the Managed Object.  See the UCSM Python SDK for information on properties for each class.
-        required: yes
+        required: true
+        type: dict
       children:
         description:
         - Optional list of child objects.  Each child has its own module, class, and properties suboptions.
         - The parent_mo_or_dn property for child objects is automatically set as the list of children is configured.
-    required: yes
+        type: list
+        elements: dict
+    required: true
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.8'
 '''
 
 EXAMPLES = r'''
@@ -218,7 +226,7 @@ def main():
         module=dict(type='str', required=True),
         class_name=dict(type='str', aliases=['class'], required=True),
         properties=dict(type='dict', required=True),
-        children=dict(type='list'),
+        children=dict(type='list', elements='dict'),
     )
     argument_spec = ucs_argument_spec.copy()
     argument_spec.update(

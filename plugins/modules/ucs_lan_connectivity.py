@@ -24,13 +24,15 @@ options:
     - If C(absent), will verify LAN Connectivity Policies are absent and will delete if needed.
     choices: [present, absent]
     default: present
+    type: str
   name:
     description:
     - The name of the LAN Connectivity Policy.
     - This name can be between 1 and 16 alphanumeric characters.
     - "You cannot use spaces or any special characters other than - (hyphen), \"_\" (underscore), : (colon), and . (period)."
     - You cannot change this name after the policy is created.
-    required: yes
+    required: true
+    type: str
   description:
     description:
     - A description of the LAN Connectivity Policy.
@@ -39,75 +41,89 @@ options:
     - "You can use any characters or spaces except the following:"
     - "` (accent mark), \ (backslash), ^ (carat), \" (double quote), = (equal sign), > (greater than), < (less than), or ' (single quote)."
     aliases: [ descr ]
+    type: str
   vnic_list:
     description:
     - List of vNICs used by the LAN Connectivity Policy.
     - vNICs used by the LAN Connectivity Policy must be created from a vNIC template.
+    type: list
+    elements: dict
     suboptions:
       name:
         description:
         - The name of the vNIC.
-        required: yes
+        required: true
+        type: str
       vnic_template:
         description:
         - The name of the vNIC template.
-        required: yes
+        required: true
+        type: str
       adapter_policy:
         description:
         - The name of the Ethernet adapter policy.
         - A user defined policy can be used, or one of the system defined policies.
+        type: str
       order:
         description:
         - String specifying the vNIC assignment order (e.g., '1', '2').
         default: 'unspecified'
+        type: str
       state:
         description:
         - If C(present), will verify vnic is configured within policy.
           If C(absent), will verify vnic is absent from policy.
         choices: [ present, absent ]
         default: present
-    version_added: '2.8'
+        type: str
   iscsi_vnic_list:
     description:
     - List of iSCSI vNICs used by the LAN Connectivity Policy.
+    type: list
+    elements: dict
     suboptions:
       name:
         description:
         - The name of the iSCSI vNIC.
-        required: yes
+        required: true
+        type: str
       overlay_vnic:
         description:
         - The LAN vNIC associated with this iSCSI vNIC.
+        type: str
       iscsi_adapter_policy:
         description:
         - The iSCSI adapter policy associated with this iSCSI vNIC.
+        type: str
       mac_address:
         description:
         - The MAC address associated with this iSCSI vNIC.
         - If the MAC address is not set, Cisco UCS Manager uses a derived MAC address.
         default: derived
+        type: str
       vlan_name:
         description:
         - The VLAN used for the iSCSI vNIC.
         default: default
+        type: str
       state:
         description:
         - If C(present), will verify iscsi vnic is configured within policy.
           If C(absent), will verify iscsi vnic is absent from policy.
         choices: [ present, absent ]
         default: present
-    version_added: '2.8'
+        type: str
   org_dn:
     description:
     - Org dn (distinguished name)
     default: org-root
+    type: str
 requirements:
 - ucsmsdk
 author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.5'
 '''
 
 EXAMPLES = r'''
@@ -298,14 +314,14 @@ def main():
     vnic = dict(
         name=dict(type='str', required=True),
         vnic_template=dict(type='str', required=True),
-        adapter_policy=dict(type='str', default=''),
+        adapter_policy=dict(type='str'),
         order=dict(type='str', default='unspecified'),
         state=dict(type='str', default='present', choices=['present', 'absent']),
     )
     iscsi_vnic = dict(
         name=dict(type='str', required=True),
-        overlay_vnic=dict(type='str', default=''),
-        iscsi_adapter_policy=dict(type='str', default=''),
+        overlay_vnic=dict(type='str'),
+        iscsi_adapter_policy=dict(type='str'),
         mac_address=dict(type='str', default='derived'),
         vlan_name=dict(type='str', default='default'),
         state=dict(type='str', default='present', choices=['present', 'absent']),
@@ -315,7 +331,7 @@ def main():
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(type='str', required=True),
-        description=dict(type='str', aliases=['descr'], default=''),
+        description=dict(type='str', aliases=['descr']),
         vnic_list=dict(type='list', elements='dict', options=vnic),
         iscsi_vnic_list=dict(type='list', elements='dict', options=iscsi_vnic),
         state=dict(type='str', default='present', choices=['present', 'absent']),

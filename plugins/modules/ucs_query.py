@@ -46,7 +46,6 @@ requirements:
 author:
     - John McDonough (@movinalot)
     - CiscoUcs (@CiscoUcs)
-version_added: "2.8"
 '''
 
 EXAMPLES = r'''
@@ -83,9 +82,10 @@ EXAMPLES = r'''
     delegate_to: localhost
 '''
 
-RETURN = '''
+RETURN = r'''
 objects:
     description: results JSON encodded
+    returned: always
     type: dict
 '''
 

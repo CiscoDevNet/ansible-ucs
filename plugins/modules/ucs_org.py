@@ -70,7 +70,6 @@ author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: "2.8"
 '''
 
 EXAMPLES = r'''

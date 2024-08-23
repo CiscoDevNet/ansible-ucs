@@ -23,6 +23,7 @@
         ntp_server: 10.10.10.10
         description: Internal NTP Server by IP address
         state: present
+      delegate_to: localhost
         
     - name: Configure NTP server
       cisco.ucs.ucs_ntp_server:
@@ -30,15 +31,18 @@
         ntp_server: pool.ntp.org
         description: External NTP Server by hostname
         state: present
+      delegate_to: localhost
     
     - name: Remove NTP server
       cisco.ucs.ucs_ntp_server:
         <<: *login_info
         ntp_server: 10.10.10.10
         state: absent
+      delegate_to: localhost
     
     - name: Remove NTP server
       cisco.ucs.ucs_ntp_server:
         <<: *login_info
         ntp_server: pool.ntp.org
         state: absent
+      delegate_to: localhost

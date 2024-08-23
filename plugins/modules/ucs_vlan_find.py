@@ -45,7 +45,6 @@ author:
 - David Soper (@dsoper2)
 - John McDonough (@movinalot)
 - CiscoUcs (@CiscoUcs)
-version_added: '2.9'
 '''
 
 EXAMPLES = r'''

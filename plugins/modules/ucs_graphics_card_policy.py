@@ -68,7 +68,6 @@ requirements:
 
 author:
 - John McDonough (@movinalot)
-version_added: "2.9"
 '''
 
 EXAMPLES = r'''
@@ -155,7 +154,6 @@ def main():
     argument_spec.update(
         org_dn=dict(type='str', default='org-root'),
         name=dict(required=True, type='str'),
-        descr=dict(type='str'),
         description=dict(type='str', aliases=['descr']),
         graphics_card_mode=dict(type='str', choices=[
             'any-configuration',
@@ -196,15 +194,9 @@ def main():
 
     kwargs = dict()
 
-    # Manage Aliased Attributes
-    for attribute in ['descr:description']:
-        attribute_alias = attribute.split(':')
-        if module.params[attribute_alias[1]] is not None:
-            kwargs[attribute_alias[0]] = module.params[attribute_alias[1]]
-
     # Manage Attributes
     for attribute in [
-            'graphics_card_mode', 'descr']:
+            'graphics_card_mode', 'description']:
         if module.params[attribute] is not None:
             kwargs[attribute] = module.params[attribute]
 
