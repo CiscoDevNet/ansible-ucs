@@ -394,19 +394,6 @@ def main():
                         if not module.check_mode:
                             update_ip_block(ucs, mo, ipv4_block, 'v4')
                         changed = True
-            elif module.params['last_addr'] and module.params['first_addr']:
-                # ipv4 block specified, check properties
-                mo_1 = get_ip_block(ucs, dn, module.params['first_addr'], module.params['last_addr'], 'v4')
-                if mo_1:
-                    kwargs = dict(subnet=module.params['subnet_mask'])
-                    kwargs['def_gw'] = module.params['default_gw']
-                    kwargs['prim_dns'] = module.params['primary_dns']
-                    kwargs['sec_dns'] = module.params['secondary_dns']
-                    if not mo_1.check_prop_match(**kwargs):
-                        # ipv4 block exists and properties match
-                        ipv4_props_match = False
-                else:
-                    ipv4_props_match = False
 
             # only check ipv6 props if the top-level and ipv4 props matched
             if module.params['ipv6_blocks']:
@@ -415,48 +402,10 @@ def main():
                         if not module.check_mode:
                             update_ip_block(ucs, mo, ipv6_block, 'v6')
                         changed = True
-            elif module.params['ipv6_last_addr'] and module.params['ipv6_first_addr']:
-                # ipv6 block specified, check properties
-                block_dn = dn + '/v6block-' + module.params['ipv6_first_addr'].lower() + '-' + module.params[
-                    'ipv6_last_addr'].lower()
-                mo_1 = ucs.login_handle.query_dn(block_dn)
-                if mo_1:
-                    kwargs = dict(prefix=module.params['ipv6_prefix'])
-                    kwargs['def_gw'] = module.params['ipv6_default_gw']
-                    kwargs['prim_dns'] = module.params['ipv6_primary_dns']
-                    kwargs['sec_dns'] = module.params['ipv6_secondary_dns']
-                    if not mo_1.check_prop_match(**kwargs):
-                        # ipv6 block exists and properties match
-                        ipv6_props_match = False
-                else:
-                    ipv6_props_match = False
 
-        if not ipv4_props_match or not ipv6_props_match:
             if not module.check_mode:
-                if module.params['last_addr'] and module.params['first_addr']:
-                    IppoolBlock(
-                        parent_mo_or_dn=mo,
-                        to=module.params['last_addr'],
-                        r_from=module.params['first_addr'],
-                        subnet=module.params['subnet_mask'],
-                        def_gw=module.params['default_gw'],
-                        prim_dns=module.params['primary_dns'],
-                        sec_dns=module.params['secondary_dns'],
-                    )
-
-                if module.params['ipv6_last_addr'] and module.params['ipv6_first_addr']:
-                    IppoolIpV6Block(
-                        parent_mo_or_dn=mo,
-                        to=module.params['ipv6_last_addr'],
-                        r_from=module.params['ipv6_first_addr'],
-                        prefix=module.params['ipv6_prefix'],
-                        def_gw=module.params['ipv6_default_gw'],
-                        prim_dns=module.params['ipv6_primary_dns'],
-                        sec_dns=module.params['ipv6_secondary_dns'],
-                    )
-
-            ucs.login_handle.add_mo(mo, True)
-            ucs.login_handle.commit()
+                ucs.login_handle.add_mo(mo, True)
+                ucs.login_handle.commit()
 
             changed = True
 
