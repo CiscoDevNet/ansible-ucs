@@ -143,7 +143,7 @@ def main():
             if mo_exists:
                 # check top-level mo props
                 kwargs = dict(assignment_order=module.params['order'])
-                kwargs['descr'] = module.params['descr']
+                kwargs['descr'] = module.params['description']
                 if mo.check_prop_match(**kwargs):
                     # top-level props match, check next level mo/props
                     if module.params['last_addr'] and module.params['first_addr']:
@@ -162,7 +162,7 @@ def main():
                     mo = MacpoolPool(
                         parent_mo_or_dn=module.params['org_dn'],
                         name=module.params['name'],
-                        descr=module.params['descr'],
+                        descr=module.params['description'],
                         assignment_order=module.params['order'],
                     )
 

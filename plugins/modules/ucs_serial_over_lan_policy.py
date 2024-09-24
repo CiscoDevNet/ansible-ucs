@@ -206,9 +206,11 @@ def main():
     kwargs = dict()
 
     # Manage Attributes
-    for attribute in ['admin_state', 'description', 'speed']:
+    for attribute in ['admin_state', 'speed']:
         if module.params[attribute] is not None:
             kwargs[attribute] = module.params[attribute]
+
+    kwargs['descr'] = module.params['description']
 
     try:
         dn = (

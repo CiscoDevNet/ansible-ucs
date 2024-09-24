@@ -155,8 +155,6 @@ def main():
             mo_exists = False
             props_match = False
             # set default params.  Done here to set values for lists which can't be done in the argument_spec
-            if not san_connectivity.get('descr'):
-                san_connectivity['descr'] = ''
             if not san_connectivity.get('wwnn_pool'):
                 san_connectivity['wwnn_pool'] = 'default'
             if san_connectivity.get('vhba_list'):
@@ -172,7 +170,7 @@ def main():
             if mo:
                 mo_exists = True
                 # check top-level mo props
-                kwargs = dict(descr=san_connectivity['descr'])
+                kwargs = dict(descr=san_connectivity['description'])
                 if (mo.check_prop_match(**kwargs)):
                     # top-level props match, check next level mo/props
                     # vnicFcNode object
@@ -209,7 +207,7 @@ def main():
                         mo = VnicSanConnPolicy(
                             parent_mo_or_dn=module.params['org_dn'],
                             name=san_connectivity['name'],
-                            descr=san_connectivity['descr'],
+                            descr=san_connectivity['description'],
                         )
                         mo_1 = VnicFcNode(
                             parent_mo_or_dn=mo,

@@ -30,6 +30,7 @@
       cisco.ucs.ucs_mac_pool:
         <<: *login_info
         name: mac-A
+        description: MAC Pool A
         org_dn: org-root/org-level1
         first_addr: 00:25:B5:00:66:00
         last_addr: 00:25:B5:00:67:F3
