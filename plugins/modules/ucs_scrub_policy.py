@@ -251,13 +251,14 @@ def main():
     # Manage Attributes
     for attribute in [
             'bios_settings_scrub',
-            'description',
             'disk_scrub',
             'flex_flash_scrub',
             'persistent_memory_scrub'
     ]:
         if module.params[attribute] is not None:
             kwargs[attribute] = module.params[attribute]
+
+    kwargs['descr'] = module.params['description']
 
     try:
         dn = (

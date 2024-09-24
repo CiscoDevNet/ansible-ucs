@@ -30,6 +30,7 @@
       cisco.ucs.ucs_san_connectivity:
         <<: *login_info
         name: Cntr-FC-Boot
+        description: FC Boot Policy
         org_dn: org-root/org-level1
         wwnn_pool: WWNN-Pool
         vhba_list:
