@@ -95,7 +95,6 @@ PLAY RECAP *********************************************************************
 
 A more detailed configuration example is provided in the server_deploy.yml playbook.
 
-# Community:
+# Support:
 
-* We are on Slack (https://ciscoucs.slack.com/) - Slack requires registration, but the ucspython team is open invitation to
-  anyone.  Click [here](https://ucspython.herokuapp.com) to register.
+Please file Issues in this repository for any defects, feature requests, or questions on usage.
