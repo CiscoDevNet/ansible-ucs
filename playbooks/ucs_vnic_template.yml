@@ -37,6 +37,10 @@
           native: 'yes'
         - name: vlan200
           native: 'no'
+          multicast_policy: default
+          fabric: A
+          id: '200'
+          sharing: none
       delegate_to: localhost
 
     - name: Remove VLAN from template

@@ -107,6 +107,36 @@ options:
         choices: ['no', 'yes']
         default: 'no'
         type: str
+      multicast_policy:
+        description:
+        - Note this option is not used and is only provided to allow use of ucs_vlans parameters in the vlan_list.
+        - The multicast policy associated with this VLAN.
+        type: str
+      fabric:
+        description:
+        - Note this option is not used and is only provided to allow use of ucs_vlans parameters in the vlan_list.
+        - "The fabric configuration of the VLAN.  This can be one of the following:"
+        - "common - The VLAN applies to both fabrics and uses the same configuration parameters in both cases."
+        - "A — The VLAN only applies to fabric A."
+        - "B — The VLAN only applies to fabric B."
+        choices: [common, A, B]
+        type: str
+      id:
+        description:
+        - Note this option is not used and is only provided to allow use of ucs_vlans parameters in the vlan_list.
+        - The unique string identifier assigned to the VLAN.
+        type: str
+      sharing:
+        description:
+        - Note this option is not used and is only provided to allow use of ucs_vlans parameters in the vlan_list.
+        - The Sharing Type field.
+        - "Whether this VLAN is subdivided into private or secondary VLANs. This can be one of the following:"
+        - "none - This VLAN does not have any secondary or private VLANs. This is a regular VLAN."
+        - "primary - This VLAN can have one or more secondary VLANs, as shown in the Secondary VLANs area."
+        - "isolated - This is a private VLAN associated with a primary VLAN. This VLAN is an Isolated VLAN."
+        - "community - This VLAN can communicate with other ports on the same community VLAN as well as the promiscuous port. This VLAN is a Community VLAN."
+        choices: [none, primary, isolated, community]
+        type: str
       state:
         description:
         - If present, will verify VLAN is present on template.
@@ -232,6 +262,10 @@ from ansible_collections.cisco.ucs.plugins.module_utils.ucs import UCSModule, uc
 def main():
     vlans_list = dict(
         name=dict(type='str'),
+        multicast_policy=dict(type='str'),
+        fabric=dict(type='str', choices=['common', 'A', 'B']),
+        id=dict(type='str'),
+        sharing=dict(type='str', choices=['none', 'primary', 'isolated', 'community']),
         native=dict(type='str', default='no', choices=['no', 'yes']),
         state=dict(type='str', default='present', choices=['present', 'absent']),
     )
