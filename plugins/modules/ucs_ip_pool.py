@@ -407,8 +407,6 @@ def main():
                 ucs.login_handle.add_mo(mo, True)
                 ucs.login_handle.commit()
 
-            changed = True
-
     except Exception as e:
         err = True
         ucs.result['msg'] = "setup error: %s " % str(e)
