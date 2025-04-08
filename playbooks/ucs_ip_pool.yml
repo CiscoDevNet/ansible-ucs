@@ -32,21 +32,21 @@
         name: ip-pool-01
         org_dn: org-root/org-level1
         ipv4_blocks:
-        - first_addr: 192.168.10.1
-          last_addr: 192.168.10.20
-          subnet_mask: 255.255.255.128
-          default_gw: 192.168.10.2
-        - first_addr: 192.168.11.1
-          last_addr: 192.168.11.20
-          subnet_mask: 255.255.255.128
-          default_gw: 192.168.11.2
+          - first_addr: 192.168.10.1
+            last_addr: 192.168.10.20
+            subnet_mask: 255.255.255.128
+            default_gw: 192.168.10.2
+          - first_addr: 192.168.11.1
+            last_addr: 192.168.11.20
+            subnet_mask: 255.255.255.128
+            default_gw: 192.168.11.2
         ipv6_blocks:
-        - ipv6_first_addr: fe80::1cae:7992:d7a1:ed07
-          ipv6_last_addr: fe80::1cae:7992:d7a1:edfe
-          ipv6_default_gw: fe80::1cae:7992:d7a1:ecff
-        - ipv6_first_addr: fe80::1cae:7992:d7a1:ec07
-          ipv6_last_addr: fe80::1cae:7992:d7a1:ecfe
-          ipv6_default_gw: fe80::1cae:7992:d7a1:ecff
+          - ipv6_first_addr: fe80::1cae:7992:d7a1:ed07
+            ipv6_last_addr: fe80::1cae:7992:d7a1:edfe
+            ipv6_default_gw: fe80::1cae:7992:d7a1:ecff
+          - ipv6_first_addr: fe80::1cae:7992:d7a1:ec07
+            ipv6_last_addr: fe80::1cae:7992:d7a1:ecfe
+            ipv6_default_gw: fe80::1cae:7992:d7a1:ecff
       delegate_to: localhost
 
     - name: Remove IPv4 and IPv6 address pool blocks
@@ -55,19 +55,57 @@
         name: ip-pool-01
         org_dn: org-root/org-level1
         ipv4_blocks:
-        - first_addr: 192.168.10.1
-          last_addr: 192.168.10.20
-          state: absent
+          - first_addr: 192.168.10.1
+            last_addr: 192.168.10.20
+            state: absent
         ipv6_blocks:
-        - ipv6_first_addr: fe80::1cae:7992:d7a1:ec07
-          ipv6_last_addr: fe80::1cae:7992:d7a1:ecfe
-          state: absent
+          - ipv6_first_addr: fe80::1cae:7992:d7a1:ec07
+            ipv6_last_addr: fe80::1cae:7992:d7a1:ecfe
+            state: absent
       delegate_to: localhost
 
     - name: Remove IPv4 and IPv6 address pool
       cisco.ucs.ucs_ip_pool:
         <<: *login_info
         name: ip-pool-01
+        org_dn: org-root/org-level1
+        state: absent
+      delegate_to: localhost
+
+    - name: IP Pool - CIMC
+      cisco.ucs.ucs_ip_pool:
+        <<: *login_info
+        name: ext-mgmt-testing
+        org_dn: org-root/org-level1
+        description: CIMC IP Pool
+        ipv4_blocks:
+          - first_addr: 10.12.34.56
+            last_addr: 10.12.34.78
+            subnet_mask: 255.255.255.0
+            default_gw: 10.12.34.1
+            primary_dns: 4.2.2.2
+            secondary_dns: 8.8.8.8
+      delegate_to: localhost
+
+    - name: Idempotent IP Pool - CIMC
+      cisco.ucs.ucs_ip_pool:
+        <<: *login_info
+        name: ext-mgmt-testing
+        org_dn: org-root/org-level1
+        description: CIMC IP Pool
+        ipv4_blocks:
+          - first_addr: 10.12.34.56
+            last_addr: 10.12.34.78
+            subnet_mask: 255.255.255.0
+            default_gw: 10.12.34.1
+            primary_dns: 4.2.2.2
+            secondary_dns: 8.8.8.8
+      delegate_to: localhost
+
+    - name: Remove IP Pool - CIMC
+      cisco.ucs.ucs_ip_pool:
+        <<: *login_info
+        name: ext-mgmt-testing
         org_dn: org-root/org-level1
         state: absent
       delegate_to: localhost
